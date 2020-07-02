@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: member
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081

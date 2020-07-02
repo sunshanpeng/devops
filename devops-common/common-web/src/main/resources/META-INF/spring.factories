@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.sunshanepng.devops.common.configuration.WebConfiguration,\
+com.sunshanepng.devops.common.configuration.SwaggerConfiguration
