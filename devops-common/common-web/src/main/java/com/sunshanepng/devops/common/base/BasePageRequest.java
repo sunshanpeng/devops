@@ -1,5 +1,6 @@
 package com.sunshanepng.devops.common.base;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,8 +11,10 @@ public class BasePageRequest implements Serializable {
 
     private static final int MAX_PAGE_SIZE = 1000;
 
+    @ApiModelProperty(value = "pageIndex")
     private int pageIndex = 1;
 
+    @ApiModelProperty(value = "pageSize")
     private int pageSize = 20;
 
     public void setPageIndex(int pageIndex) {

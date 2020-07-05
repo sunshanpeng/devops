@@ -8,17 +8,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 public abstract class BaseController<T extends BaseEntity, ID, S extends BaseService<T, ID>> {
     @Resource
     protected S baseService;
-
-    @GetMapping("")
-    @ApiOperation(value = "查询所有记录", notes = "不分页查询所有记录")
-    public BaseResponse<List<T>> get() {
-        return BaseResponse.createSuccessResult(baseService.findAll());
-    }
 
     @GetMapping("/{id}")
     @MethodLogger

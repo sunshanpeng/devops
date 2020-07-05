@@ -17,6 +17,7 @@ public class BasePageResponse<T> extends BaseResponse<List<T>> {
     public static <T> BasePageResponse<T> createSuccessResult(List<T> model, int pageIndex, int pageSize, long totalCount) {
         BasePageResponse<T> response = new BasePageResponse<>();
         response.setModel(model);
+        response.setSuccess(true);
         response.setPageIndex(pageIndex);
         response.setPageSize(pageSize);
         response.setTotalCount(totalCount);

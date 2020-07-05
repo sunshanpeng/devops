@@ -11,7 +11,10 @@
     <artifactId>member-api</artifactId>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.sunshanpeng.devops</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
