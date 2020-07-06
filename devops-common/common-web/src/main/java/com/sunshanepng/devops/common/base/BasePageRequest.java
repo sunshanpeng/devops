@@ -11,20 +11,18 @@ public class BasePageRequest implements Serializable {
 
     private static final int MAX_PAGE_SIZE = 1000;
 
-    @ApiModelProperty(value = "pageIndex")
-    private int pageIndex = 1;
+    private Integer pageIndex = 1;
 
-    @ApiModelProperty(value = "pageSize")
-    private int pageSize = 20;
+    private Integer pageSize = 20;
 
-    public void setPageIndex(int pageIndex) {
-        if (pageIndex > 0) {
+    public void setPageIndex(Integer pageIndex) {
+        if (pageIndex != null && pageIndex > 0) {
             this.pageIndex = pageIndex;
         }
     }
 
-    public void setPageSize(int pageSize) {
-        if (pageSize > 0 && pageSize <= MAX_PAGE_SIZE) {
+    public void setPageSize(Integer pageSize) {
+        if (pageSize != null && pageSize > 0 && pageSize <= MAX_PAGE_SIZE) {
             this.pageSize = pageSize;
         }
     }

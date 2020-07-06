@@ -14,7 +14,6 @@ public abstract class BaseController<T extends BaseEntity, ID, S extends BaseSer
     protected S baseService;
 
     @GetMapping("/{id}")
-    @MethodLogger
     @ApiOperation(value = "查询", notes = "通过主键ID查询")
     @ApiImplicitParam(name = "id", value = "ID", required = true)
     public BaseResponse<T> get(@PathVariable ID id) {
