@@ -15,19 +15,23 @@ public abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ApiModelProperty(hidden = true)
-    private LocalDateTime createdTime;
+    @Column(name = "create_time", nullable = false, columnDefinition = "datetime not null default now() comment '创建时间'")
+    private LocalDateTime createTime;
+
     @ApiModelProperty(hidden = true)
-    private LocalDateTime modifiedTime;
+    @Column(name = "modify_time", nullable = false, columnDefinition = "datetime not null default now() comment '修改时间'")
+    private LocalDateTime modifyTime;
 
     @PrePersist
     protected void prePersist() {
-        this.setCreatedTime(LocalDateTime.now());
-        this.setModifiedTime(LocalDateTime.now());
+        this.setCreateTime(LocalDateTime.now());
+        this.setModifyTime(LocalDateTime.now());
     }
 
     @PreUpdate
     protected void preUpdate() {
-        this.setModifiedTime(LocalDateTime.now());
+        this.setModifyTime(LocalDateTime.now());
     }
 }

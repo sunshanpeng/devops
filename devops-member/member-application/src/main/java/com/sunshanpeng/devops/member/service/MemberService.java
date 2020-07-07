@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.member.service.impl;
+package com.sunshanpeng.devops.member.service;
 
 import com.sunshanepng.devops.common.base.BaseService;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;
 
-public interface MemberService extends BaseService<MemberEntity,Long> {
+public interface MemberService extends BaseService<MemberEntity, Long> {
 
     Page<MemberEntity> pageQuery(@NotNull MemberPageQueryDTO queryDTO);
 

@@ -4,13 +4,13 @@ import com.sunshanepng.devops.common.exception.BusinessException;
 import com.sunshanepng.devops.common.log.MethodLogger;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-
 public abstract class BaseController<T extends BaseEntity, ID, S extends BaseService<T, ID>> {
-    @Resource
+
+    @Autowired
     protected S baseService;
 
     @GetMapping("/{id}")

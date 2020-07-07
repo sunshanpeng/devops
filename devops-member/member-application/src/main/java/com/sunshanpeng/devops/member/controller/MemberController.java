@@ -4,7 +4,7 @@ import com.sunshanepng.devops.common.base.BaseController;
 import com.sunshanepng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
-import com.sunshanpeng.devops.member.service.impl.MemberService;
+import com.sunshanpeng.devops.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

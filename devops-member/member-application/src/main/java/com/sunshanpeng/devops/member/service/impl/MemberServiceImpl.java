@@ -1,9 +1,10 @@
 package com.sunshanpeng.devops.member.service.impl;
 
 import com.sunshanepng.devops.common.base.BaseServiceImpl;
+import com.sunshanpeng.devops.member.domain.dao.MemberRepository;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
-import com.sunshanpeng.devops.member.domain.entity.MemberRepository;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
+import com.sunshanpeng.devops.member.service.MemberService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MemberServiceImpl extends BaseServiceImpl<MemberEntity,Long, MemberRepository> implements MemberService{
+public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, MemberRepository> implements MemberService {
 
     @Override
     public Page<MemberEntity> pageQuery(MemberPageQueryDTO queryDTO) {

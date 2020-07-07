@@ -1,14 +1,13 @@
 package com.sunshanepng.devops.common.base;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseServiceImpl<T extends BaseEntity, ID, R extends JpaRepository<T, ID>> implements BaseService<T, ID> {
+public abstract class BaseServiceImpl<T extends BaseEntity, ID, R extends BaseRepository<T, ID>> implements BaseService<T, ID> {
 
-    @Resource
+    @Autowired
     protected R baseRepository;
 
     @Override
