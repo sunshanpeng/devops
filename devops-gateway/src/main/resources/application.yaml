@@ -5,10 +5,10 @@ spring:
     name: gateway
   cloud:
     gateway:
+      default-filters:
+        - StripPrefix=1
       routes:
         - id: member
           uri: http://localhost:8081
           predicates:
             - Path=/member/**
-          filters:
-            - StripPrefix=1
