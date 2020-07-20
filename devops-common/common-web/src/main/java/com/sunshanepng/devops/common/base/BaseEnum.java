@@ -5,7 +5,7 @@ import java.util.List;
 public interface BaseEnum<T extends BaseEnum<T>> {
     Object getValue();
 
-    Object getText();
+    Object getLabel();
 
     List<ValueLabelDTO> getList();
 }

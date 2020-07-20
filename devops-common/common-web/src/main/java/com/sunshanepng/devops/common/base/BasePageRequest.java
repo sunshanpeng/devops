@@ -1,6 +1,5 @@
 package com.sunshanepng.devops.common.base;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
