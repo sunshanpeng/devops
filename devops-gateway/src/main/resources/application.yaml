@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: member
+          uri: http://localhost:8081
+          predicates:
+            - Path=/member/**
+          filters:
+            - StripPrefix=1
