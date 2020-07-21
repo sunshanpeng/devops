@@ -7,8 +7,22 @@ spring:
     gateway:
       default-filters:
         - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: default
+            fallbackUri: forward:/defaultfallback
       routes:
         - id: member
           uri: http://localhost:8081
           predicates:
             - Path=/member/**
+
+# hystrix 信号量隔离，1.5秒后自动超时
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 1500
