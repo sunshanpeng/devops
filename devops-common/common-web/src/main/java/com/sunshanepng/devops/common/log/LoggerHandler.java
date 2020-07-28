@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 @Aspect
 public class LoggerHandler {
 
@@ -19,8 +21,8 @@ public class LoggerHandler {
 
         try {
             if (LogTypeEnum.FULL == methodLogger.logType() || LogTypeEnum.PARAM == methodLogger.logType()) {
-                String args = JsonUtil.toString(joinPoint.getArgs());
-                log.info("method: [{}], args: {}", methodName, args);
+                Optional<String> args = JsonUtil.toJSONString(joinPoint.getArgs());
+                log.info("method: [{}], args: {}", methodName, args.orElse("error args"));
             }
         } catch (Exception var12) {
             log.warn("method: {}, args log error {}", methodName, var12.getLocalizedMessage());
@@ -33,7 +35,7 @@ public class LoggerHandler {
         try {
             if (LogTypeEnum.FULL == methodLogger.logType() || LogTypeEnum.RETURN == methodLogger.logType()) {
                 long elapsedTime = System.currentTimeMillis() - start;
-                log.info("method: [{}], result: {}, span: {} ms", methodName, JsonUtil.toString(result), elapsedTime);
+                log.info("method: [{}], result: {}, span: {} ms", methodName, JsonUtil.toJSONString(result), elapsedTime);
             }
         } catch (Exception var11) {
             log.warn("method: [{}], return log error {}", methodName, var11.getLocalizedMessage());

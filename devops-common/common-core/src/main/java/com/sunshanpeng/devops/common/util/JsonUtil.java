@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package com.sunshanpeng.devops.common.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -26,8 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JsonUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
@@ -35,70 +29,67 @@ public class JsonUtil {
     private static final DateTimeFormatter MY_DATE_TIME;
     private static final DateTimeFormatter MY_DATE;
 
-    public JsonUtil() {
+    private JsonUtil() {
     }
 
-    private static String writeValue(Object object) {
+    private static Optional<String> writeValue(Object object) {
         if (object == null) {
-            return null;
+            return Optional.empty();
         } else if (object instanceof String) {
-            return (String)object;
+            return Optional.of((String) object);
         } else {
             try {
-                return OBJECT_MAPPER.writeValueAsString(object);
+                return Optional.of(OBJECT_MAPPER.writeValueAsString(object));
             } catch (JsonProcessingException var2) {
                 LOGGER.error("writeJsonValue error, ", var2);
-                return null;
+                return Optional.empty();
             }
         }
     }
 
-    private static <T> T readValue(String json, Class<T> t) {
+    private static <T> Optional<T> readValue(String json, Class<T> t) {
         if (json == null) {
-            return null;
+            return Optional.empty();
         } else {
             try {
-                return OBJECT_MAPPER.readValue(json, t);
+                return Optional.of(OBJECT_MAPPER.readValue(json, t));
             } catch (Exception var3) {
                 LOGGER.error("readJsonValue error, ", var3);
-                return null;
+                return Optional.empty();
             }
         }
     }
 
-    private static <T> T readValue(String json, TypeReference<T> t) {
+    private static <T> Optional<T> readValue(String json, TypeReference<T> t) {
         if (json == null) {
-            return null;
+            return Optional.empty();
         } else {
             try {
-                return OBJECT_MAPPER.readValue(json, t);
+                return Optional.of(OBJECT_MAPPER.readValue(json, t));
             } catch (Exception var3) {
                 LOGGER.error("readJsonValue error, ", var3);
-                return null;
+                return Optional.empty();
             }
         }
     }
 
-    public static String toString(Object object) {
+    public static Optional<String> toJSONString(Object object) {
         return writeValue(object);
     }
 
-    public static <T> T toBean(String json, Class<T> t) {
+    public static <T> Optional<T> toBean(String json, Class<T> t) {
         return readValue(json, t);
     }
 
     public static <T> List<T> toList(String json) {
-        return readValue(json, new TypeReference<List<T>>() {
-        });
+        Optional<List<T>> optionalList = readValue(json, new TypeReference<List<T>>(){});
+        return optionalList.orElse(Collections.emptyList());
     }
 
     public static <K, V> Map<K, V> toMap(String json) {
-        return readValue(json, new TypeReference<Map<K, V>>() {
+        Optional<Map<K, V>> optionalMap = readValue(json, new TypeReference<Map<K, V>>() {
         });
-    }
-
-    public static <T> T toBean(String json, TypeReference<T> t) {
-        return readValue(json, t);
+        return optionalMap.orElse(Collections.emptyMap());
     }
 
     static {

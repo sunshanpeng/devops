@@ -4,17 +4,21 @@ import com.sunshanepng.devops.common.base.BaseEntity;
 import com.sunshanpeng.devops.common.consts.DatabaseConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = MemberEntity.TABLE_NAME)
 @SQLDelete(sql = "update " + MemberEntity.TABLE_NAME + " set " + DatabaseConst.DELETE_FIELD + " = 1 where id = ?")
 @Where(clause = DatabaseConst.DELETE_WHERE)
@@ -34,13 +38,15 @@ public class MemberEntity extends BaseEntity {
 
     @ApiModelProperty(value = "邮箱", required = true)
     @NotBlank
+    @Email
     @Column(nullable = false)
     private String email;
 
     @ApiModelProperty(value = "电话", required = true)
     @NotBlank
+    @Length(min = 11, max = 11)
     @Column(nullable = false)
-    private String phone;
+    private Long phone;
 
     @ApiModelProperty(hidden = true)
     @Column(name =  DatabaseConst.DELETE_FIELD, columnDefinition = "Bit default '0'")
