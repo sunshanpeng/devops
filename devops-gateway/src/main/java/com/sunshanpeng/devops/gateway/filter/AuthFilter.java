@@ -1,7 +1,13 @@
 package com.sunshanpeng.devops.gateway.filter;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sunshanpeng.devops.gateway.config.AuthWhiteUrlsProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -16,11 +22,17 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Optional;
 
+@Slf4j
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final String AUTH_USERNAME = "username";
+
+    @Value("${auth.jwt.secret:123456}")
+    private String secretKey;
 
     @Resource
     private AuthWhiteUrlsProperties authWhiteUrls;
@@ -36,16 +48,28 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (StringUtils.isBlank(token)) {
             ServerHttpResponse originalResponse = exchange.getResponse();
             originalResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
-            originalResponse.getHeaders().add("Content-Type", "text/html;charset=UTF-8");
-            byte[] response = "{\"errorMessage\": \"401 Unauthorized.\"}"
+            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            byte[] response = "{\"errorMessage\": \"unauthorized.\"}"
+                    .getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
+            return originalResponse.writeWith(Flux.just(buffer));
+        }
+        //校验token并取出username
+        Optional<String> usernameOptional = verifyToken(token);
+        //无效token
+        if (!usernameOptional.isPresent()) {
+            ServerHttpResponse originalResponse = exchange.getResponse();
+            originalResponse.setStatusCode(HttpStatus.FORBIDDEN);
+            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            byte[] response = "{\"errorMessage\": \"invalid token.\"}"
                     .getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
             return originalResponse.writeWith(Flux.just(buffer));
         }
 
-        //将现在的request，添加当前身份
+        //把username放到请求头中
         ServerHttpRequest httpRequest = exchange.getRequest().mutate()
-                .header(AUTH_USERNAME, "sunshanpeng").build();
+                .header(AUTH_USERNAME, usernameOptional.get()).build();
         ServerWebExchange mutableExchange = exchange.mutate().request(httpRequest).build();
         return chain.filter(mutableExchange);
     }
@@ -58,6 +82,33 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
         return false;
+    }
+
+    private Optional<String> verifyToken(String token) {
+        return verifyJWT(token);
+    }
+
+    /**
+     * JWT验证
+     * @param token
+     * @return userName
+     */
+    private Optional<String> verifyJWT(String token){
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("MING")
+                .build();
+        DecodedJWT jwt;
+        try {
+            jwt = verifier.verify(token);
+        } catch (Exception e) {
+            log.warn(String.format("jwt verify error, token:[%s]", token), e);
+            return Optional.empty();
+        }
+        if (jwt.getExpiresAt().before(new Date())) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(jwt.getClaim("username").asString());
     }
 
     @Override

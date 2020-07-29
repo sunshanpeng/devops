@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     BaseResponse<Object> handleControllerException(HttpServletRequest request, Throwable ex) {
         log.error(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), ex.getMessage()), ex);
-        return BaseResponse.createFailResult("服务端未知异常");
+        return BaseResponse.createFailResult(ex.getMessage());
     }
 
     @ExceptionHandler
@@ -81,8 +81,6 @@ public class GlobalExceptionHandler {
                                                             String message) {
         log.warn(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), message), ex);
-
-
         return BaseResponse.createFailResult(message);
     }
 }

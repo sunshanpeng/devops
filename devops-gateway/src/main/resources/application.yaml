@@ -5,6 +5,16 @@ spring:
     name: gateway
   cloud:
     gateway:
+      ################################
+      # 配置允许跨域请求
+      ################################
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
       default-filters:
         - StripPrefix=1
         - name: Hystrix
@@ -17,7 +27,7 @@ spring:
           predicates:
             - Path=/member/**
 
-# hystrix 信号量隔离，1.5秒后自动超时
+# hystrix 信号量隔离，5秒后自动超时
 hystrix:
   command:
     default:
@@ -25,4 +35,9 @@ hystrix:
         isolation:
           strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 1500
+            timeoutInMilliseconds: 5000
+
+auth:
+  white:
+    urls:
+      - /member/auth/login
