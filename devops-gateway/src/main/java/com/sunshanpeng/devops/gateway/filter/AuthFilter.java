@@ -80,7 +80,15 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (authWhiteUrls.skip(url)) {
             return true;
         }
-
+        //跳过静态资源
+        if (url.endsWith(".html") || url.endsWith(".js")
+                    || url.endsWith(".css")) {
+            return true;
+        }
+        //跳过swagger接口（线上不能跳过）
+        if (url.contains("/swagger-resources") || url.contains("/v2/api-docs")) {
+            return true;
+        }
         return false;
     }
 
