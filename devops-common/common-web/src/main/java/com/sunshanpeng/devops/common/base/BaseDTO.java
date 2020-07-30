@@ -1,5 +1,6 @@
 package com.sunshanpeng.devops.common.base;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,7 +10,10 @@ import java.time.LocalDateTime;
 public class BaseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("id")
     private Long id;
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModify;
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
+    @ApiModelProperty("修改时间")
+    private LocalDateTime modifyTime;
 }
