@@ -1,4 +1,4 @@
-package com.sunshanepng.devops.common.base;
+package com.sunshanpeng.devops.common.base;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

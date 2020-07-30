@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.service.impl;
 
-import com.sunshanepng.devops.common.base.BaseServiceImpl;
+import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.member.domain.dao.OrganizationRepository;
 import com.sunshanpeng.devops.member.domain.entity.OrganizationEntity;
 import com.sunshanpeng.devops.member.service.OrganizationService;

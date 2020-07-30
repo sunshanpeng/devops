@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.dto;
 
-import com.sunshanepng.devops.common.base.BaseDTO;
+import com.sunshanpeng.devops.common.base.BaseDTO;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;

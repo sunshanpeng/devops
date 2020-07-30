@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.domain.entity;
 
-import com.sunshanepng.devops.common.base.BaseEntity;
+import com.sunshanpeng.devops.common.base.BaseEntity;
 import com.sunshanpeng.devops.common.consts.DatabaseConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

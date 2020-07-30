@@ -1,4 +1,4 @@
-package com.sunshanepng.devops.common.base;
+package com.sunshanpeng.devops.common.base;
 
 import com.sunshanpeng.devops.common.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;

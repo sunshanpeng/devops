@@ -1,7 +1,7 @@
-package com.sunshanepng.devops.common.base;
+package com.sunshanpeng.devops.common.base;
 
-import com.sunshanepng.devops.common.exception.BusinessException;
-import com.sunshanepng.devops.common.log.MethodLogger;
+import com.sunshanpeng.devops.common.exception.BusinessException;
+import com.sunshanpeng.devops.common.log.MethodLogger;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

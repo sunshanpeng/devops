@@ -1,4 +1,4 @@
-package com.sunshanepng.devops.common.base;
+package com.sunshanpeng.devops.common.base;
 
 import lombok.Data;
 

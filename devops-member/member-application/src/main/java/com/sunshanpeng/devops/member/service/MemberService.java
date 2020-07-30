@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.service;
 
-import com.sunshanepng.devops.common.base.BaseService;
+import com.sunshanpeng.devops.common.base.BaseService;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
 import org.springframework.data.domain.Page;

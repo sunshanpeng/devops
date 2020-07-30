@@ -2,7 +2,7 @@ package com.sunshanpeng.devops.member.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.sunshanepng.devops.common.base.BaseResponse;
+import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.member.dto.LoginDTO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;

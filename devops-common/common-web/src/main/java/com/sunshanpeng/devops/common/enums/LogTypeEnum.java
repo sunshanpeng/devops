@@ -1,4 +1,4 @@
-package com.sunshanepng.devops.common.enums;
+package com.sunshanpeng.devops.common.enums;
 
 public enum LogTypeEnum {
     PARAM("param log"),

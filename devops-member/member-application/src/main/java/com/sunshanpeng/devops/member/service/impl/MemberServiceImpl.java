@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.service.impl;
 
-import com.sunshanepng.devops.common.base.BaseServiceImpl;
+import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.member.domain.dao.MemberRepository;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;

@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.controller;
 
-import com.sunshanepng.devops.common.base.BaseController;
+import com.sunshanpeng.devops.common.base.BaseController;
 import com.sunshanpeng.devops.member.domain.entity.OrganizationEntity;
 import com.sunshanpeng.devops.member.service.OrganizationService;
 import io.swagger.annotations.Api;

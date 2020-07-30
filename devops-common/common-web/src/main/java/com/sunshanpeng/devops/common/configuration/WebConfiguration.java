@@ -1,7 +1,7 @@
-package com.sunshanepng.devops.common.configuration;
+package com.sunshanpeng.devops.common.configuration;
 
-import com.sunshanepng.devops.common.exception.GlobalExceptionHandler;
-import com.sunshanepng.devops.common.log.LoggerHandler;
+import com.sunshanpeng.devops.common.exception.GlobalExceptionHandler;
+import com.sunshanpeng.devops.common.log.LoggerHandler;
 import com.sunshanpeng.devops.common.util.JsonUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

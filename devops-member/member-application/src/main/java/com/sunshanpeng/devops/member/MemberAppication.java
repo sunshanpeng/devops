@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member;
 
-import com.sunshanepng.devops.common.base.BaseJpaRepositoryImpl;
+import com.sunshanpeng.devops.common.base.BaseJpaRepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

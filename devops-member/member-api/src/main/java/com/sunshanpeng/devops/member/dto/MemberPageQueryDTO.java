@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.member.dto;
 
-import com.sunshanepng.devops.common.base.BasePageRequest;
+import com.sunshanpeng.devops.common.base.BasePageRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,7 +1,7 @@
-package com.sunshanepng.devops.common.exception;
+package com.sunshanpeng.devops.common.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sunshanepng.devops.common.base.BaseResponse;
+import com.sunshanpeng.devops.common.base.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
