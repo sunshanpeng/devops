@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.member.dto.LoginDTO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ public class AuthController {
     private static final Integer tokenExpireTime = 24 * 60 * 60 * 1000;
 
     @PostMapping("/login")
+    @ApiOperation(value = "登录", notes = "通过账号密码登录")
     public BaseResponse<String> login(@RequestBody @Validated LoginDTO loginDTO) {
 
         return BaseResponse.createSuccessResult(buildJWT(loginDTO.getUsername()));
