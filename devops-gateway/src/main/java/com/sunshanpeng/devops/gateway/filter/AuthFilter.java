@@ -113,9 +113,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
             log.warn(String.format("jwt verify error, token:[%s]", token), e);
             return Optional.empty();
         }
-        if (jwt.getExpiresAt().before(new Date())) {
-            return Optional.empty();
-        }
         return Optional.ofNullable(jwt.getClaim("username").asString());
     }
 
