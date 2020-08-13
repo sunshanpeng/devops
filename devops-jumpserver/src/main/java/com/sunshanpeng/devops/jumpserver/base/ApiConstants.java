@@ -2,7 +2,8 @@ package com.sunshanpeng.devops.jumpserver.base;
 
 public class ApiConstants{
 
-    public static final  String TOKEN = "/api/users/v1/auth/";
+//    public static final  String TOKEN = "/api/users/v1/auth/";
+    public static final  String TOKEN = "/api/v1/authentication/auth/";
 
     public static final  String USERS = "/api/users/v1/users/";
     public static final  String USERGROUPS = "/api/users/v1/groups/";
