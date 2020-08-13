@@ -152,4 +152,12 @@ public class JmsAssetsService extends JmsBaseService {
         return super.query("", url);
     }
 
+    /**
+     * 更新资产用户（可以用来更新服务器的密码）
+     * @param assertUser
+     */
+    public void updateAssertUser(AssertUser assertUser) {
+        super.add(assertUser,ApiConstants.ASSERT_USER);
+    }
+
 }
