@@ -34,6 +34,10 @@ public class JmsAssetsService extends JmsBaseService {
         return super.query(id, ApiConstants.ASSETS);
     }
 
+    public Map<String, String> queryAssetByIp(String ip) {
+        return super.queryAssetByIp(ip, ApiConstants.ASSETS);
+    }
+
     //资产树
     public Map<String, String> addAssetsNodes(AssetsNodes assetsNodes) {
         return super.add(assetsNodes, ApiConstants.NODES);
