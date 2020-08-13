@@ -7,7 +7,7 @@
         <groupId>com.sunshanpeng.devops</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>gateway</artifactId>
+    <artifactId>devops-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway</name>
 
