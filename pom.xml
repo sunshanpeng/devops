@@ -19,6 +19,7 @@
         <module>devops-member</module>
         <module>devops-message</module>
         <module>devops-common</module>
+        <module>devops-jumpserver</module>
     </modules>
 
     <properties>
@@ -77,12 +78,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
