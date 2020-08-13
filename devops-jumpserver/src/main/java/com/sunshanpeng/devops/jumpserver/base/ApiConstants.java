@@ -30,5 +30,6 @@ public class ApiConstants{
 
     public static final  String SYSTEM_USERS_PUSH = "/api/assets/v1/system-user/{id}/push/";
 
+    public static final String ASSERT_USER = "/api/v1/assets/asset-users/";
 
 }
