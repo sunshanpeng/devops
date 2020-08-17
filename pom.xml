@@ -20,6 +20,7 @@
         <module>devops-message</module>
         <module>devops-common</module>
         <module>devops-jumpserver</module>
+        <module>devops-jenkins</module>
     </modules>
 
     <properties>
