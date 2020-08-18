@@ -21,6 +21,7 @@
         <module>devops-common</module>
         <module>devops-jumpserver</module>
         <module>devops-jenkins</module>
+        <module>devops-huaweicloud</module>
     </modules>
 
     <properties>
