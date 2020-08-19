@@ -19,9 +19,7 @@
         <module>devops-member</module>
         <module>devops-message</module>
         <module>devops-common</module>
-        <module>devops-jumpserver</module>
-        <module>devops-jenkins</module>
-        <module>devops-huaweicloud</module>
+        <module>devops-client</module>
     </modules>
 
     <properties>

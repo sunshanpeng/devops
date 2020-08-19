@@ -3,22 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>parent</artifactId>
+        <artifactId>devops-client</artifactId>
         <groupId>com.sunshanpeng.devops</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>devops-huaweicloud</artifactId>
-
+    <artifactId>devops-jenkins</artifactId>
+    <properties>
+        <jenkins-client-version>0.3.8</jenkins-client-version>
+    </properties>
     <dependencies>
+        <!--jenkinsci 开始-->
         <dependency>
-            <groupId>com.huaweicloud</groupId>
-            <artifactId>java-sdk</artifactId>
-            <version>1.0.24</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/huaweicloud-java-sdk-1.0.24.jar</systemPath>
+            <groupId>com.offbytwo.jenkins</groupId>
+            <artifactId>jenkins-client</artifactId>
+            <version>${jenkins-client-version}</version>
         </dependency>
+        <!--jenkinsci 结束-->
     </dependencies>
 
 </project>
