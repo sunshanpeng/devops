@@ -16,6 +16,7 @@
         <module>devops-jumpserver</module>
         <module>devops-jenkins</module>
         <module>devops-huaweicloud</module>
+        <module>devops-gitlab</module>
     </modules>
 
 </project>
