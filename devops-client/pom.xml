@@ -17,6 +17,7 @@
         <module>devops-jenkins</module>
         <module>devops-huaweicloud</module>
         <module>devops-gitlab</module>
+        <module>devops-aliyun</module>
     </modules>
 
 </project>
