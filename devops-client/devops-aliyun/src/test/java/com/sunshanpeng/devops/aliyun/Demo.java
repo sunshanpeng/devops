@@ -11,7 +11,7 @@ public class Demo {
     public static void main(String[] args) {
         // 创建DefaultAcsClient实例并初始化
         DefaultProfile profile = DefaultProfile.getProfile(
-                "<your-region-id>",          // 地域ID
+                "cn-hangzhou",          // 地域ID
                 "<your-access-key-id>",      // RAM账号的AccessKey ID
                 "<your-access-key-secret>"); // RAM账号AccessKey Secret
         IAcsClient client = new DefaultAcsClient(profile);
