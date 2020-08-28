@@ -1,9 +1,13 @@
 package com.sunshanpeng.devops.resource.dto;
 
 import com.sunshanpeng.devops.resource.enums.RecordTypeEnum;
+import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+
 @Data
+@Builder
 public class DomainRecordDTO {
     /**
      * 主机记录
@@ -13,6 +17,7 @@ public class DomainRecordDTO {
     /**
      * 域名
      */
+    @NotEmpty
     private String domainName;
 
     /**
