@@ -2,32 +2,28 @@ package com.sunshanpeng.devops.resource.enums;
 
 import com.sunshanpeng.devops.common.base.BaseEnum;
 import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public enum RecordStatusEnum implements BaseEnum {
-    ENABLE("Enable","启用"),
-    DISABLE("Disable", "禁用"),;
+    ENABLE(1,"启用","Enable","ENABLE"),
+    DISABLE(0,  "禁用","Disable","DISABLE"),;
 
 
-    private String value;
+    private Integer value;
     private String label;
+    private String AliDNS;
+    private String AliPrivateZone;
 
-    RecordStatusEnum(String value, String label) {
+    RecordStatusEnum(Integer value, String label, String AliDNS, String AliPrivateZone) {
         this.value = value;
         this.label = label;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
+        this.AliDNS = AliDNS;
+        this.AliPrivateZone = AliPrivateZone;
     }
 
     @Override

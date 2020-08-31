@@ -112,7 +112,7 @@ public class DomainRecordUtil {
                 .forEach(recordId ->{
                     SetDomainRecordStatusRequest request = new SetDomainRecordStatusRequest();
                     request.setRecordId(recordId);
-                    request.setStatus(statusEnum.getValue());
+                    request.setStatus(statusEnum.getAliDNS());
                     try {
                         aliyunClient.doAction(request);
                     } catch (ClientException e) {
