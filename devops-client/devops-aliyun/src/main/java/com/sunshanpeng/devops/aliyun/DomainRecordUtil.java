@@ -1,16 +1,18 @@
 package com.sunshanpeng.devops.aliyun;
 
-import com.aliyuncs.alidns.model.v20150109.DescribeDomainRecordsRequest;
-import com.aliyuncs.alidns.model.v20150109.DescribeDomainRecordsResponse;
-import com.aliyuncs.alidns.model.v20150109.DescribeSubDomainRecordsRequest;
-import com.aliyuncs.alidns.model.v20150109.DescribeSubDomainRecordsResponse;
+import com.aliyuncs.alidns.model.v20150109.*;
 import com.aliyuncs.exceptions.ClientException;
+import com.sunshanpeng.devops.common.exception.BusinessException;
 import com.sunshanpeng.devops.resource.dto.DomainRecordDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Slf4j
 @Validated
 public class DomainRecordUtil {
 
@@ -35,11 +37,58 @@ public class DomainRecordUtil {
      * @param subDomainName 域名记录
      * @return 一条或多条域名解析记录
      */
-    public List<DescribeSubDomainRecordsResponse.Record> subDomain(String subDomainName) throws ClientException {
+    public List<DescribeSubDomainRecordsResponse.Record> subDomain(@NotEmpty String subDomainName) throws ClientException {
         DescribeSubDomainRecordsRequest request = new DescribeSubDomainRecordsRequest();
         request.setSubDomain(subDomainName);
         DescribeSubDomainRecordsResponse response = aliyunClient.getResponse(request);
         return response.getDomainRecords();
+    }
+
+    /**
+     * 新增或者更新域名记录
+     * @param domainRecord
+     * @throws ClientException
+     */
+    public void addOrUpdate(@NotNull DomainRecordDTO domainRecord) throws ClientException {
+        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainRecord.getFullDomain());
+        if (CollectionUtils.isEmpty(records)) {
+            AddDomainRecordRequest addDomainRecordRequest = new AddDomainRecordRequest();
+            addDomainRecordRequest.setDomainName(domainRecord.getDomainName());
+            addDomainRecordRequest.setRR(domainRecord.getRr());
+            addDomainRecordRequest.setValue(domainRecord.getValue());
+            addDomainRecordRequest.setType(domainRecord.getRecordType().getValue());
+            aliyunClient.doAction(addDomainRecordRequest);
+            return;
+        }
+
+        if (records.size() > 1) {
+            throw new BusinessException("域名记录超过1条，暂时不支持更新");
+        }
+
+        UpdateDomainRecordRequest updateDomainRecordRequest = new UpdateDomainRecordRequest();
+        updateDomainRecordRequest.setRecordId(records.get(0).getRecordId());
+        updateDomainRecordRequest.setValue(domainRecord.getValue());
+        updateDomainRecordRequest.setRR(domainRecord.getRr());
+        updateDomainRecordRequest.setType(domainRecord.getRecordType().getValue());
+        aliyunClient.doAction(updateDomainRecordRequest);
+    }
+
+    public void delete(@NotEmpty String domainName) throws ClientException {
+        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainName);
+        if (CollectionUtils.isEmpty(records)) {
+            return;
+        }
+        records.stream().map(DescribeSubDomainRecordsResponse.Record::getRecordId)
+                .forEach(recordId ->{
+                    DeleteDomainRecordRequest deleteDomainRecordRequest = new DeleteDomainRecordRequest();
+                    deleteDomainRecordRequest.setRecordId(recordId);
+                    try {
+                        aliyunClient.doAction(deleteDomainRecordRequest);
+                    } catch (ClientException e) {
+                        log.error(String.format("domainName: %s", domainName), e);
+                        throw new BusinessException(String.format("删除域名记录异常: %s", domainName));
+                    }
+                });
     }
 
     public DomainRecordUtil(AliyunClient aliyunClient) {

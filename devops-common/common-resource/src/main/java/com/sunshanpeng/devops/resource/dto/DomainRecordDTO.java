@@ -3,6 +3,7 @@ package com.sunshanpeng.devops.resource.dto;
 import com.sunshanpeng.devops.resource.enums.RecordTypeEnum;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -21,6 +22,10 @@ public class DomainRecordDTO {
     private String domainName;
 
     /**
+     * 全域名，rr + domainName
+     */
+    private String fullDomain;
+    /**
      * 主机记录值
      */
     private String value;
@@ -29,4 +34,10 @@ public class DomainRecordDTO {
      * 记录类型
      */
     private RecordTypeEnum recordType;
+
+    public String getFullDomain() {
+        Assert.notNull(rr, "rr must not be null");
+        Assert.notNull(domainName, "domainName must not be null");
+        return rr + "." + domainName;
+    }
 }

@@ -19,12 +19,12 @@ public enum RecordTypeEnum implements BaseEnum {
     }
 
     @Override
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
     @Override
-    public Object getLabel() {
+    public String getLabel() {
         return label;
     }
 
