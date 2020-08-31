@@ -4,6 +4,7 @@ import com.aliyuncs.alidns.model.v20150109.*;
 import com.aliyuncs.exceptions.ClientException;
 import com.sunshanpeng.devops.common.exception.BusinessException;
 import com.sunshanpeng.devops.resource.dto.DomainRecordDTO;
+import com.sunshanpeng.devops.resource.enums.RecordStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +20,7 @@ public class DomainRecordUtil {
     private AliyunClient aliyunClient;
 
     /**
-     * 获取域名记录
+     * 获取域名解析记录
      * @param domainRecord 域名记录
      * @return
      */
@@ -33,7 +34,7 @@ public class DomainRecordUtil {
     }
 
     /**
-     * 获取域名记录
+     * 获取域名解析记录
      * @param subDomainName 域名记录
      * @return 一条或多条域名解析记录
      */
@@ -45,7 +46,7 @@ public class DomainRecordUtil {
     }
 
     /**
-     * 新增或者更新域名记录
+     * 新增或者更新解析记录
      * @param domainRecord
      * @throws ClientException
      */
@@ -62,7 +63,7 @@ public class DomainRecordUtil {
         }
 
         if (records.size() > 1) {
-            throw new BusinessException("域名记录超过1条，暂时不支持更新");
+            throw new BusinessException("解析记录超过1条，暂时不支持更新");
         }
 
         UpdateDomainRecordRequest updateDomainRecordRequest = new UpdateDomainRecordRequest();
@@ -73,6 +74,11 @@ public class DomainRecordUtil {
         aliyunClient.doAction(updateDomainRecordRequest);
     }
 
+    /**
+     * 删除解析记录
+     * @param domainName
+     * @throws ClientException
+     */
     public void delete(@NotEmpty String domainName) throws ClientException {
         List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainName);
         if (CollectionUtils.isEmpty(records)) {
@@ -86,7 +92,32 @@ public class DomainRecordUtil {
                         aliyunClient.doAction(deleteDomainRecordRequest);
                     } catch (ClientException e) {
                         log.error(String.format("domainName: %s", domainName), e);
-                        throw new BusinessException(String.format("删除域名记录异常: %s", domainName));
+                        throw new BusinessException(String.format("删除解析记录异常: %s", domainName));
+                    }
+                });
+    }
+
+    /**
+     * 设置解析记录状态
+     * @param domainName
+     * @param statusEnum
+     * @throws ClientException
+     */
+    public void setStatus(String domainName, RecordStatusEnum statusEnum) throws ClientException {
+        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainName);
+        if (CollectionUtils.isEmpty(records)) {
+            throw new BusinessException(String.format("解析记录不存在: %s", domainName));
+        }
+        records.stream().map(DescribeSubDomainRecordsResponse.Record::getRecordId)
+                .forEach(recordId ->{
+                    SetDomainRecordStatusRequest request = new SetDomainRecordStatusRequest();
+                    request.setRecordId(recordId);
+                    request.setStatus(statusEnum.getValue());
+                    try {
+                        aliyunClient.doAction(request);
+                    } catch (ClientException e) {
+                        log.error(String.format("domainName: %s", domainName), e);
+                        throw new BusinessException(String.format("设置解析记录状态异常: %s", domainName));
                     }
                 });
     }

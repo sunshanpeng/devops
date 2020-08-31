@@ -2,7 +2,7 @@ package com.sunshanpeng.devops.common.base;
 
 import java.util.List;
 
-public interface BaseEnum<T extends BaseEnum<T>> {
+public interface BaseEnum {
     Object getValue();
 
     Object getLabel();
