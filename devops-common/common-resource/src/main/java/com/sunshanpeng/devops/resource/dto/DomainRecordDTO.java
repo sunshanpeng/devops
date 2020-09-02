@@ -30,6 +30,10 @@ public class DomainRecordDTO {
      */
     private String value;
 
+    private Integer ttl;//默认5分钟
+
+    private String description;
+
     /**
      * 记录类型
      */
@@ -39,5 +43,12 @@ public class DomainRecordDTO {
         Assert.notNull(rr, "rr must not be null");
         Assert.notNull(domainName, "domainName must not be null");
         return rr + "." + domainName;
+    }
+
+    public Integer getTtl() {
+        if (ttl == null) {
+            return 300;
+        }
+        return ttl;
     }
 }
