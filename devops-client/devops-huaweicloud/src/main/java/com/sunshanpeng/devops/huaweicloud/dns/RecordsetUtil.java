@@ -34,6 +34,22 @@ public class RecordsetUtil {
         return huaweicloudClient.getClient().dns().recordsets().list(zoneId);
     }
 
+    public List<? extends Recordset> list(String domain) {
+        String zoneId = zoneId(UrlUtil.getHost(domain));
+        return huaweicloudClient.getClient().dns().recordsets().list(zoneId);
+    }
+
+    public Optional<? extends Recordset> get(String subDomain) {
+        List<? extends Recordset> list = list(UrlUtil.getHost(subDomain));
+        return list.parallelStream().filter(recordSet -> (subDomain + ".").equals(recordSet.getName())).findAny();
+    }
+
+    public void delete(String subDomain) {
+        Optional<? extends Recordset> recordset = get(subDomain);
+        String zoneId = zoneId(UrlUtil.getHost(subDomain));
+        recordset.ifPresent(recordset1 -> huaweicloudClient.getClient().dns().recordsets().delete(zoneId, recordset1.getId()));
+    }
+
     public void add(String domain, String value) {
         DomainRecordDTO domainRecord = DomainRecordDTO.builder().rr(UrlUtil.getRR(domain)).domainName(UrlUtil.getHost(domain))
                 .recordType(RecordTypeEnum.A).value(value).build();
