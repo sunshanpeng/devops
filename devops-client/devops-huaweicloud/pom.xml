@@ -19,6 +19,14 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/huaweicloud-java-sdk-1.0.24.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.sunshanpeng.devops</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sunshanpeng.devops</groupId>
+            <artifactId>common-resource</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
