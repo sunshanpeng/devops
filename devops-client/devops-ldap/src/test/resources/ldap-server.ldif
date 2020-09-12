@@ -1,0 +1,18 @@
+dn: dc=sunshanpeng,dc=com
+objectClass: top
+objectClass: domain
+
+dn: ou=people,dc=sunshanpeng,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=0,ou=people,dc=sunshanpeng,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: sunshanpeng
+sn: apeng
+uid: 0
+userPassword: {SHA}nFCebWjxfaLbHHG1Qk5UU4trbvQ=

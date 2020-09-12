@@ -18,6 +18,7 @@
         <module>devops-huaweicloud</module>
         <module>devops-gitlab</module>
         <module>devops-aliyun</module>
+        <module>devops-ldap</module>
     </modules>
 
 </project>
