@@ -3,23 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>parent</artifactId>
+        <artifactId>devops-client</artifactId>
         <groupId>com.sunshanpeng.devops</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>devops-client</artifactId>
+    <artifactId>devops-k8s</artifactId>
 
-    <modules>
-        <module>devops-jumpserver</module>
-        <module>devops-jenkins</module>
-        <module>devops-huaweicloud</module>
-        <module>devops-gitlab</module>
-        <module>devops-aliyun</module>
-        <module>devops-ldap</module>
-        <module>devops-k8s</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-client</artifactId>
+            <version>4.10.2</version>
+        </dependency>
+    </dependencies>
 
 </project>
