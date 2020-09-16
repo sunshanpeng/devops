@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.sunshanpeng.devops</groupId>
+            <artifactId>common-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
             <version>4.10.2</version>
