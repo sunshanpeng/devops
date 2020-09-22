@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Validated
@@ -51,7 +52,9 @@ public class DomainRecordUtil {
      * @throws ClientException
      */
     public void addOrUpdate(@NotNull DomainRecordDTO domainRecord) throws ClientException {
-        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainRecord.getFullDomain());
+        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainRecord.getFullDomain()).stream()
+                .filter(record -> RecordStatusEnum.ENABLE.getAliPrivateZone().equals(record.getStatus()))
+                .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(records)) {
             AddDomainRecordRequest addDomainRecordRequest = new AddDomainRecordRequest();
             addDomainRecordRequest.setDomainName(domainRecord.getDomainName());
