@@ -34,4 +34,8 @@ public class OrganizationEntity extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
     private String parentId;
+
+    @ApiModelProperty(hidden = true)
+    @Column(name =  DatabaseConst.DELETE_FIELD, nullable = false, columnDefinition = "tinyint default '0'")
+    protected Boolean isDeleted = false;
 }

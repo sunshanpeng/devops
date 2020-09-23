@@ -4,6 +4,7 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true # 打印SQL语句
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update # create每次运行都删除原有表创建新表,update不用每次创建新表
   datasource:
