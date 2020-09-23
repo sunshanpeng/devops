@@ -49,6 +49,6 @@ public class MemberEntity extends BaseEntity {
     private Long phone;
 
     @ApiModelProperty(hidden = true)
-    @Column(name =  DatabaseConst.DELETE_FIELD, columnDefinition = "Bit default '0'")
+    @Column(name =  DatabaseConst.DELETE_FIELD, columnDefinition = "tinyint default '0'")
     protected Boolean isDeleted = false;
 }
