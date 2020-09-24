@@ -7,11 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -43,8 +41,7 @@ public class MemberEntity extends BaseEntity {
     private String email;
 
     @ApiModelProperty(value = "电话", required = true)
-    @NotBlank
-    @Length(min = 11, max = 11)
+    @NotNull
     @Column(nullable = false)
     private Long phone;
 
