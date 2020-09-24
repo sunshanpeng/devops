@@ -36,6 +36,7 @@ const actions = {
         const { model } = response
         commit('SET_TOKEN', model)
         setToken(model)
+        commit('SET_NAME', username)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,9 +47,8 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state.username).then(response => {
         const { data } = response
-
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
@@ -56,7 +56,6 @@ const actions = {
         const { name, avatar } = data
 
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
         reject(error)
