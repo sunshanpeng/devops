@@ -29,6 +29,11 @@ public class MemberEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @ApiModelProperty(value = "姓名", required = true)
+    @NotBlank
+    @Column(nullable = false)
+    private String fullName;
+
     @ApiModelProperty(value = "密码", required = true)
     @NotBlank
     @Column(nullable = false)
@@ -40,7 +45,7 @@ public class MemberEntity extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @ApiModelProperty(value = "电话", required = true)
+    @ApiModelProperty(value = "手机号", required = true)
     @NotNull
     @Column(nullable = false)
     private Long phone;
