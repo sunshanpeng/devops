@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="filterItem" placeholder="用户名/手机号" style="width: 200px;" class="filter-item"
+      <el-input v-model="filterItem" placeholder="用户名/姓名" style="width: 200px;" class="filter-item"
                 @keyup.enter.native="handleFilter()"/>
       <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -18,6 +18,11 @@
       <el-table-column
         prop="username"
         label="用户名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="fullName"
+        label="姓名"
         width="180">
       </el-table-column>
       <el-table-column
