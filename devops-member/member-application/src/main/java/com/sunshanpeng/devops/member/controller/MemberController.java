@@ -28,9 +28,4 @@ public class MemberController extends BaseController<MemberEntity, Long, MemberS
         return BasePageResponse.createSuccessResult(page.getContent(), queryDTO.getPageIndex(),
                 queryDTO.getPageSize(), page.getTotalElements());
     }
-
-    @GetMapping("/test")
-    public BaseResponse<String> test(@RequestHeader String username) {
-        return BaseResponse.createSuccessResult(username);
-    }
 }

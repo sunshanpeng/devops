@@ -1,12 +1,14 @@
 package com.sunshanpeng.devops.cmdb.dto;
 
 import com.sunshanpeng.devops.common.base.BaseDTO;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@ApiModel("应用信息")
 public class ApplicationDTO extends BaseDTO {
 
     @ApiModelProperty(value = "应用名称", required = true)
@@ -35,5 +37,9 @@ public class ApplicationDTO extends BaseDTO {
 
     @ApiModelProperty(value = "次要负责人", required = true)
     private List<AppUserDTO> secondary;
+
+    public void setPrimary(String username, String fullName) {
+        this.primary = new AppUserDTO(username, fullName);
+    }
 
 }
