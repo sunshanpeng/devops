@@ -34,8 +34,8 @@ public abstract class BaseController<T extends BaseEntity, ID, S extends BaseSer
     @PostMapping
     @MethodLogger
     @ApiOperation(value = "添加")
-    public BaseResponse<T> post(@RequestBody @Validated T user) {
-        T model = baseService.save(user);
+    public BaseResponse<T> post(@RequestBody @Validated T entity) {
+        T model = baseService.save(entity);
         return BaseResponse.createSuccessResult(model);
     }
 

@@ -1,13 +1,11 @@
 package com.sunshanpeng.devops.cmdb.domain.entity;
 
 import com.sunshanpeng.devops.common.base.BaseEntity;
+import com.sunshanpeng.devops.common.converter.IntegerListConverter;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,10 +32,10 @@ public class AppInfoEntity extends BaseEntity {
     private String appLevel;
 
     @Column(nullable = false)
-    private Integer status;
+    private String status;
 
-    @Column(name="ports")
-    @ElementCollection(targetClass=String.class)
+    @Column(name = "ports", nullable = false)
+    @Convert(converter = IntegerListConverter.class)
     private List<Integer> ports;
 
     @Column(nullable = false)

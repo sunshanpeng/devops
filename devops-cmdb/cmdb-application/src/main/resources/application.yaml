@@ -6,7 +6,7 @@ spring:
     show-sql: true # 打印SQL语句
     #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: update # create每次运行都删除原有表创建新表,update不用每次创建新表
+      ddl-auto: create # create每次运行都删除原有表创建新表,update不用每次创建新表
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cmdb?autoReconnect=true&useUnicode=true&characterEncoding=utf8
