@@ -33,6 +33,7 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
 
     @Resource
     private AppUserRepository appUserRepository;
+
     @Override
     public void save(ApplicationDetailDTO application) {
         beforeSave(application);
@@ -40,6 +41,12 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
         doSave(application);
 
         afterSave(application);
+    }
+
+    @Override
+    public ApplicationDTO findByAppName(String appName) {
+        AppInfoEntity appInfoEntity = baseRepository.findByAppName(appName);
+        return converter(appInfoEntity);
     }
 
     @Override
@@ -59,22 +66,8 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
                 .previous();
         Page<AppInfoEntity> page = baseRepository.findAll(specification, pageable);
         //查询应用对应负责人
-        List<ApplicationDTO> applicationDTOList = page.getContent().stream().map(appInfoEntity -> {
-            ApplicationDTO applicationDTO = BeanUtil.copy(appInfoEntity, ApplicationDTO.class);
-            List<AppUserEntity> appUserEntityList = appUserRepository.findByAppName(appInfoEntity.getAppName());
-            Optional<AppUserEntity> primary = appUserEntityList.stream().filter(appUserEntity ->
-                    AppUserTypeEnum.PRIMARY.getValue().equals(appUserEntity.getAppUserType()))
-                    .findFirst();
-            List<AppUserEntity> secondary = appUserEntityList.stream().filter(appUserEntity ->
-                    AppUserTypeEnum.SECONDARY.getValue().equals(appUserEntity.getAppUserType()))
-                    .collect(Collectors.toList());
-            primary.ifPresent(user -> applicationDTO.setPrimary(user.getAppName(), user.getFullName()));
-            List<AppUserDTO> secondaryUsers = secondary.stream().map(appUserEntity ->
-                    new AppUserDTO(appUserEntity.getUsername(), appUserEntity.getFullName()))
-                    .collect(Collectors.toList());
-            applicationDTO.setSecondary(secondaryUsers);
-            return applicationDTO;
-        }).collect(Collectors.toList());
+        List<ApplicationDTO> applicationDTOList = page.getContent().stream()
+                .map(this::converter).collect(Collectors.toList());
         //返回
         return BasePageResponse.createSuccessResult(applicationDTOList, queryDTO.getPageIndex(),
                 queryDTO.getPageSize(), page.getTotalElements());
@@ -91,5 +84,25 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
 
     private void afterSave(ApplicationDetailDTO application) {
         // notice
+    }
+
+    private ApplicationDTO converter(AppInfoEntity appInfoEntity) {
+        if (appInfoEntity == null) {
+            return null;
+        }
+        ApplicationDTO applicationDTO = BeanUtil.copy(appInfoEntity, ApplicationDTO.class);
+        List<AppUserEntity> appUserEntityList = appUserRepository.findByAppName(appInfoEntity.getAppName());
+        Optional<AppUserEntity> primary = appUserEntityList.stream().filter(appUserEntity ->
+                AppUserTypeEnum.PRIMARY.getValue().equals(appUserEntity.getAppUserType()))
+                .findFirst();
+        List<AppUserEntity> secondary = appUserEntityList.stream().filter(appUserEntity ->
+                AppUserTypeEnum.SECONDARY.getValue().equals(appUserEntity.getAppUserType()))
+                .collect(Collectors.toList());
+        primary.ifPresent(user -> applicationDTO.setPrimary(user.getAppName(), user.getFullName()));
+        List<AppUserDTO> secondaryUsers = secondary.stream().map(appUserEntity ->
+                new AppUserDTO(appUserEntity.getUsername(), appUserEntity.getFullName()))
+                .collect(Collectors.toList());
+        applicationDTO.setSecondary(secondaryUsers);
+        return applicationDTO;
     }
 }

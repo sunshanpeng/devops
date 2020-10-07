@@ -4,4 +4,5 @@ import com.sunshanpeng.devops.cmdb.domain.entity.AppInfoEntity;
 import com.sunshanpeng.devops.common.base.BaseRepository;
 
 public interface AppInfoRepository extends BaseRepository<AppInfoEntity, Long> {
+    AppInfoEntity findByAppName(String appName);
 }

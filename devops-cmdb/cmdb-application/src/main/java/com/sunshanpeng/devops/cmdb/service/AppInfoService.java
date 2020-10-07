@@ -10,5 +10,7 @@ import com.sunshanpeng.devops.common.base.BaseService;
 public interface AppInfoService extends BaseService<AppInfoEntity, Long>{
     void save(ApplicationDetailDTO application);
 
+    ApplicationDTO findByAppName(String appName);
+
     BasePageResponse<ApplicationDTO> pageQuery(ApplicationPageQueryDTO queryDTO);
 }

@@ -32,6 +32,12 @@ public class ApplicationController {
         return BaseResponse.createSuccessResult(null);
     }
 
+    @GetMapping("/{appName}")
+    @ApiOperation(value = "查询", notes = "通过应用名称查询")
+    public BaseResponse<ApplicationDTO> get(@PathVariable String appName) {
+        return BaseResponse.createSuccessResult(appInfoService.findByAppName(appName));
+    }
+
     @GetMapping
     @ApiOperation(value = "分页查询", notes = "分页查询应用信息")
     public BasePageResponse<ApplicationDTO> page(ApplicationPageQueryDTO queryDTO) {
