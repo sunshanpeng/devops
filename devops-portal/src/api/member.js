@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function list() {
+export function list(data) {
   return request({
     url: '/member/members',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 
 }

@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="filterItem" placeholder="用户名/姓名" style="width: 200px;" class="filter-item"
-                @keyup.enter.native="searchHandle()"/>
-      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search"
+                clearable @keyup.enter.native="searchHandle()"/>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search"
                  @click="searchHandle">
         搜索
       </el-button>
@@ -16,7 +16,7 @@
       <el-table
         :data="tableData"
         stripe
-        border="true"
+        :border="true"
         style="width: 100%">
         <el-table-column
           prop="username"
@@ -83,9 +83,15 @@
     },
     methods: {
       searchHandle() {
-        list().then(response => {
+        let params = Object.assign({}, {
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          username: this.filterItem
+        });
+        list(params).then(response => {
           console.log(response)
           this.tableData = response.model
+          this.totalCount = response.totalCount
         })
       },
       handleCreate() {
