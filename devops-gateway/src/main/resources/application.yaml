@@ -46,6 +46,10 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/member/**
+        - id: cmdb
+          uri: http://localhost:8082
+          predicates:
+            - Path=/cmdb/**
 
 # hystrix 信号量隔离，5秒后自动超时
 hystrix:

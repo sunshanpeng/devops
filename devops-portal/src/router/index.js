@@ -82,7 +82,21 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/cmdb',
+    component: Layout,
+    redirect: '/cmdb/app',
+    name: 'CMDB',
+    meta: { title: 'CMDB', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'app',
+        name: 'App',
+        component: () => import('@/views/cmdb/app/index'),
+        meta: { title: '应用管理', icon: 'table' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
