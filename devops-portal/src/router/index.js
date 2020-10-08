@@ -68,18 +68,12 @@ export const constantRoutes = [
         component: () => import('@/views/member/index'),
         meta: { title: '成员管理', icon: 'table' }
       },
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
+      // {
+      //   path: 'tree',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: 'Tree', icon: 'tree' }
+      // }
     ]
   },
   {
