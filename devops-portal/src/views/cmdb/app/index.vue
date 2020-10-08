@@ -2,9 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="filterItem" placeholder="应用名" style="width: 200px;" class="filter-item"
-                @keyup.enter.native="handleFilter()"/>
-      <el-button v-waves class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search"
-                 @click="handleFilter">
+                clearable @keyup.enter.native="searchHandle()"/>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search"
+                 @click="searchHandle">
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
@@ -15,7 +15,7 @@
     <el-table
       :data="tableData"
       stripe
-      border="true"
+      :border="true"
       style="width: 100%">
       <el-table-column
         prop="appName"
@@ -41,6 +41,19 @@
         label="修改时间">
       </el-table-column>
     </el-table>
+
+    <div class="page-container">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        :total="totalCount"
+        layout="total, sizes, prev, pager, next">
+      </el-pagination>
+    </div>
   </div>
 
 
@@ -54,22 +67,41 @@
     data() {
       return {
         tableData: [],
-        filterItem: ''
+        filterItem: '',
+        pageIndex: 1,
+        pageSize: 10,
+        pageSizes: [10, 20, 50, 100],
+        totalCount: 100,
       }
     },
     mounted() {
-      list().then(response => {
-        console.log(response)
-        this.tableData = response.model
-      })
+      this.searchHandle()
     },
     methods: {
-      handleFilter() {
-
+      searchHandle() {
+        let params = Object.assign({}, {
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          appName: this.filterItem
+        });
+        list(params).then(response => {
+          console.log(response)
+          this.tableData = response.model
+          this.totalCount = response.totalCount
+        })
       },
       handleCreate() {
 
-      }
+      },
+      handleSizeChange (pageSize) {
+        this.pageSize = pageSize
+        this.pageIndex = 1
+        this.searchHandle()
+      },
+      handleCurrentChange (pageIndex) {
+        this.pageIndex = pageIndex
+        this.searchHandle()
+      },
     }
   }
 </script>
