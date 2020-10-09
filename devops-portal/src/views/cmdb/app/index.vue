@@ -7,10 +7,11 @@
                  @click="searchHandle">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
-                 @click="handleCreate">
-        新增
-      </el-button>
+      <router-link :to="{path: '/cmdb/app/create'}">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
+          新增
+        </el-button>
+      </router-link>
     </div>
     <el-table
       :data="tableData"
@@ -89,9 +90,6 @@
           this.tableData = response.model
           this.totalCount = response.totalCount
         })
-      },
-      handleCreate() {
-
       },
       handleSizeChange (pageSize) {
         this.pageSize = pageSize

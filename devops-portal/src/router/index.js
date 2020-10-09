@@ -87,7 +87,22 @@ export const constantRoutes = [
         path: 'app',
         name: 'App',
         component: () => import('@/views/cmdb/app/index'),
-        meta: { title: '应用管理', icon: 'table' }
+        meta: { title: '应用管理', icon: 'table' },
+        children: []
+      },
+      {
+        path: 'app/create',
+        name: 'CreateApp',
+        hidden: true,
+        component: () => import('@/views/cmdb/app/create'),
+        meta: { title: '新建应用', icon: 'table' }
+      },
+      {
+        path: 'app/edit/:appName',
+        name: 'EditApp',
+        hidden: true,
+        component: () => import('@/views/cmdb/app/edit'),
+        meta: { title: '编辑应用', icon: 'table' }
       }
     ]
   },
