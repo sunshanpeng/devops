@@ -1,0 +1,29 @@
+
+.text-center{
+  text-align: center;
+}
+
+// main-container global css
+.app-container {
+  padding: 20px;
+}
+
+.filter-container {
+  padding-bottom: 10px;
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+.table-container {
+
+}
+
+.page-container {
+  margin-top: 10px;
+  float: right;
+}
+
