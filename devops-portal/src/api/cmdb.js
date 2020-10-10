@@ -8,3 +8,10 @@ export function list(data) {
   })
 
 }
+export function dict(params) {
+  return request({
+    url: `/cmdb/dicts/${params}`,
+    method: 'get',
+  })
+
+}

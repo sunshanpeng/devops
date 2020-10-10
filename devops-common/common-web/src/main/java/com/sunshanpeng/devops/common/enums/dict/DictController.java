@@ -1,6 +1,7 @@
 package com.sunshanpeng.devops.common.enums.dict;
 
 import com.sunshanpeng.devops.common.base.BaseResponse;
+import com.sunshanpeng.devops.common.base.ValueLabelDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class DictController {
 
     @ApiOperation("获取指定字典")
     @GetMapping("/{keys}")
-    public BaseResponse<Map<String, List<DictDTO>>> getDict(@PathVariable List<String> keys) {
+    public BaseResponse<Map<String, List<ValueLabelDTO>>> getDict(@PathVariable List<String> keys) {
         return BaseResponse.createSuccessResult(dictService.getDicts(keys));
     }
 }

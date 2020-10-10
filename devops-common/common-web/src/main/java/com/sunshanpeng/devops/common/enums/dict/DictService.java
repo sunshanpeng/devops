@@ -2,6 +2,7 @@ package com.sunshanpeng.devops.common.enums.dict;
 
 import com.sunshanpeng.devops.common.base.BaseEnum;
 import com.sunshanpeng.devops.common.base.Dict;
+import com.sunshanpeng.devops.common.base.ValueLabelDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -28,15 +29,15 @@ public class DictService {
     }
 
 
-    private List<DictDTO> getDict(String key) {
+    private List<ValueLabelDTO> getDict(String key) {
         List<BaseEnum> dictEnums = dictMap.get(key);
         if (dictEnums != null) {
-            return dictEnums.stream().map(dict -> new DictDTO(dict.getValue(), dict.getLabel())).collect(Collectors.toList());
+            return dictEnums.stream().map(dict -> new ValueLabelDTO(dict.getValue(), dict.getLabel())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
 
-    public Map<String, List<DictDTO>> getDicts(List<String> keys) {
+    public Map<String, List<ValueLabelDTO>> getDicts(List<String> keys) {
         return keys.stream().collect(Collectors.toMap(
                 Function.identity(),
                 this::getDict

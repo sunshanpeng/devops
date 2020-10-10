@@ -14,19 +14,40 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="应用类型">
-            <el-input v-model="form.appType"></el-input>
+            <el-select v-model="form.appType" placeholder="请选择">
+              <el-option
+                v-for="item in appType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="应用等级">
-            <el-input v-model="form.appLevel"></el-input>
+            <el-select v-model="form.appLevel" placeholder="请选择">
+              <el-option
+                v-for="item in appLevel"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="应用状态">
-            <el-input v-model="form.status"></el-input>
+            <el-select v-model="form.status" placeholder="请选择">
+              <el-option
+                v-for="item in appStatus"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -85,6 +106,7 @@
 </template>
 
 <script>
+  import {dict} from "@/api/cmdb";
   export default {
     name: "AppDetail",
     props: {
@@ -109,8 +131,14 @@
           artifactPath: '',
           liveness: '',
           readiness: '',
-        }
+        },
+        appType:[],
+        appLevel:[],
+        appStatus:[],
       }
+    },
+    mounted() {
+      this.init()
     },
     methods: {
       onSubmit() {
@@ -118,6 +146,15 @@
       },
       onCancel() {
         console.log('cancel!');
+      },
+      init() {
+        let dicts = ["appType","appLevel","appStatus"]
+        dict(dicts).then(response => {
+          console.log(response)
+          this.appType = response.model.appType
+          this.appLevel = response.model.appLevel
+          this.appStatus = response.model.appStatus
+        })
       }
     }
   }

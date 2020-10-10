@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Dict(key = "appLevel", desc = "应用等级")
 public enum AppLevelEnum implements BaseEnum {
 
-    P1("p1"),
-    P2("p2"),
-    P3("p3"),
+    P1("P1"),
+    P2("P2"),
+    P3("P3"),
     ;
 
     AppLevelEnum(String value) {
