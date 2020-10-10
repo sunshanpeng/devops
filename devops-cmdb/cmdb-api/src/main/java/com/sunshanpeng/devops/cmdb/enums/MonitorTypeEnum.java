@@ -1,6 +1,7 @@
 package com.sunshanpeng.devops.cmdb.enums;
 
 import com.sunshanpeng.devops.common.base.BaseEnum;
+import com.sunshanpeng.devops.common.base.Dict;
 import com.sunshanpeng.devops.common.base.ValueLabelDTO;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Dict(key = "monitorType", desc = "监控类型")
 public enum MonitorTypeEnum implements BaseEnum {
 
     LIVENESS("liveness"),

@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.sunshanpeng.devops.common.configuration.WebConfiguration,\
-com.sunshanpeng.devops.common.configuration.SwaggerConfiguration
+com.sunshanpeng.devops.common.configuration.SwaggerConfiguration,\
+com.sunshanpeng.devops.common.configuration.DictConfiguration
