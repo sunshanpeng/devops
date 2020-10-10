@@ -2,6 +2,7 @@ package com.sunshanpeng.devops.common.enums.dict;
 
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "字典管理")
 @RestController
 @RequestMapping("/dicts")
 public class DictController {
