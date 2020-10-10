@@ -30,7 +30,7 @@ public class ApplicationDTO extends BaseDTO {
     private String organization;
 
     @ApiModelProperty(value = "应用端口")
-    private List<Integer> ports;
+    private String ports;
 
     @ApiModelProperty(value = "主要负责人", required = true)
     private AppUserDTO primary;

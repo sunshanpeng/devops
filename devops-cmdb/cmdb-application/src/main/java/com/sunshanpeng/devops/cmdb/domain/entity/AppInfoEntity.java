@@ -34,9 +34,8 @@ public class AppInfoEntity extends BaseEntity {
     @Column(nullable = false)
     private String status;
 
-    @Column(name = "ports", nullable = false)
-    @Convert(converter = IntegerListConverter.class)
-    private List<Integer> ports;
+    @Column(nullable = false)
+    private String ports;
 
     @Column(nullable = false)
     private String organization;

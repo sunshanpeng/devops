@@ -6,5 +6,12 @@ export function list(data) {
     method: 'get',
     params: data
   })
+}
 
+export function search(keyword) {
+  return request({
+    url: '/member/members/search',
+    method: 'get',
+    params: {"keyword": keyword}
+  })
 }

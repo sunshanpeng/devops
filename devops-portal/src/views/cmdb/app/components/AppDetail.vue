@@ -64,12 +64,41 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="主要负责人">
-            <el-input v-model="form.primary"></el-input>
+            <el-select
+              v-model="form.primary.username"
+              filterable
+              remote
+              placeholder="请输入主要负责人"
+              :remote-method="remoteUserMethod"
+              @change="primaryChangeHandle">
+              <el-option
+                v-for="item in searchUsers"
+                :key="item.username"
+                :label="item.fullName"
+                :value="item.username">
+                <span>{{item.fullName}}_{{item.username}}</span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="次要负责人">
-            <el-input v-model="form.secondary"></el-input>
+            <el-select
+              v-model="form.secondary"
+              filterable
+              multiple
+              remote
+              placeholder="请输入次要负责人"
+              :remote-method="remoteUserMethod"
+              @change="secondaryChangeHandle">
+              <el-option
+                v-for="item in searchUsers"
+                :key="item.username"
+                :label="item.fullName"
+                :value="item.username">
+                <span>{{item.fullName}}_{{item.username}}</span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -107,6 +136,8 @@
 
 <script>
   import {dict, createApp} from "@/api/cmdb";
+  import {search} from "@/api/member";
+
   export default {
     name: "AppDetail",
     props: {
@@ -125,16 +156,21 @@
           status: '',
           organization: '',
           ports: '',
-          primary: '',
-          secondary: '',
+          primary: {
+            username: '',
+            fullName: ''
+          },
+          secondary: [],
+          secondaryCopy: [],
           codeUrl: '',
           artifactPath: '',
           liveness: '',
           readiness: '',
         },
-        appType:[],
-        appLevel:[],
-        appStatus:[],
+        appType: [],
+        appLevel: [],
+        appStatus: [],
+        searchUsers: [],
       }
     },
     mounted() {
@@ -143,6 +179,7 @@
     methods: {
       onSubmit() {
         console.log('submit!');
+        this.form.secondary = this.form.secondaryCopy
         createApp(this.form).then(response => {
           console.log(response)
         })
@@ -150,14 +187,39 @@
       onCancel() {
         console.log('cancel!');
       },
+      remoteUserMethod(keyword) {
+        search(keyword).then(response => {
+          this.searchUsers = response.model
+        })
+      },
+      primaryChangeHandle(value) {
+        let temp = this.searchUsers.filter(person => person.username == value)
+        if (temp.length) {
+          this.$set(this.form.primary, 'username', temp[0].username)
+          this.$set(this.form.primary, 'fullName', temp[0].fullName)
+          this.remoteUserMethod('');
+        }
+      },
+      secondaryChangeHandle(value) {
+        this.form.secondaryCopy = []
+        this.remoteUserMethod('');
+        for (let i = 0; i < value.length; i++) {
+          let username = value[i]
+          let member = this.searchUsers.filter(item => item.username === username)
+          if (member.length) {
+            this.form.secondaryCopy.push(member[0])
+          }
+        }
+      },
       init() {
-        let dicts = ["appType","appLevel","appStatus"]
+        let dicts = ["appType", "appLevel", "appStatus"]
         dict(dicts).then(response => {
           console.log(response)
           this.appType = response.model.appType
           this.appLevel = response.model.appLevel
           this.appStatus = response.model.appStatus
         })
+        this.remoteUserMethod('');
       }
     }
   }
