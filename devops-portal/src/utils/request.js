@@ -62,6 +62,7 @@ service.interceptors.response.use(
       console.log(error.response.status)
       switch (error.response.status) {
         case 401:
+        case 403:
           // 返回 401 清除token信息并跳转到登录页面
           MessageBox.confirm('无效Token，请重新登录', '重新登录', {
             confirmButtonText: '重新登录',
