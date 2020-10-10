@@ -116,13 +116,25 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="存活探针">
-            <el-input v-model="form.liveness"></el-input>
+          <el-form-item label="就绪探针端口">
+            <el-input v-model="form.readiness.monitorPort"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="就绪探针">
-            <el-input v-model="form.readiness"></el-input>
+          <el-form-item label="就绪探针路径">
+            <el-input v-model="form.readiness.monitorPath"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="存活探针端口">
+            <el-input v-model="form.liveness.monitorPort"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="存活探针路径">
+            <el-input v-model="form.liveness.monitorPath"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -164,8 +176,14 @@
           secondaryCopy: [],
           codeUrl: '',
           artifactPath: '',
-          liveness: '',
-          readiness: '',
+          liveness: {
+            monitorPort: 8080,
+            monitorPath: '/actuator/info',
+          },
+          readiness: {
+            monitorPort: 8080,
+            monitorPath: '/actuator/health',
+          },
         },
         appType: [],
         appLevel: [],
