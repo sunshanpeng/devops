@@ -18,8 +18,8 @@ import javax.annotation.Resource;
 @Slf4j
 @Api(tags = "应用管理")
 @RestController
-@RequestMapping("/applications")
-public class ApplicationController {
+@RequestMapping("/apps")
+public class AppController {
 
     @Resource
     private AppInfoService appInfoService;

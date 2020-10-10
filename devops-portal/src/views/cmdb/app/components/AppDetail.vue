@@ -106,7 +106,7 @@
 </template>
 
 <script>
-  import {dict} from "@/api/cmdb";
+  import {dict, createApp} from "@/api/cmdb";
   export default {
     name: "AppDetail",
     props: {
@@ -143,6 +143,9 @@
     methods: {
       onSubmit() {
         console.log('submit!');
+        createApp(this.form).then(response => {
+          console.log(response)
+        })
       },
       onCancel() {
         console.log('cancel!');
