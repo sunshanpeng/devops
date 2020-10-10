@@ -1,9 +1,11 @@
 package com.sunshanpeng.devops.member.service.impl;
 
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
+import com.sunshanpeng.devops.common.util.BeanUtil;
 import com.sunshanpeng.devops.member.domain.dao.MemberRepository;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
+import com.sunshanpeng.devops.member.dto.SimpleMemberDTO;
 import com.sunshanpeng.devops.member.service.MemberService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, MemberRepository> implements MemberService {
@@ -41,8 +44,10 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, Membe
     }
 
     @Override
-    public List<MemberEntity> search(String keyword) {
+    public List<SimpleMemberDTO> search(String keyword) {
         keyword = "%" + keyword + "%";
-        return baseRepository.findAllByUsernameLikeOrFullNameLike(keyword, keyword);
+        return baseRepository.findAllByUsernameLikeOrFullNameLike(keyword, keyword)
+                .stream().map(memberEntity -> BeanUtil.copy(memberEntity, SimpleMemberDTO.class))
+                .collect(Collectors.toList());
     }
 }
