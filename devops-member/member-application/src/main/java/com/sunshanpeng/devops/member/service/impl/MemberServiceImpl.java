@@ -39,4 +39,10 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, Membe
                 .previous();
         return baseRepository.findAll(specification, pageable);
     }
+
+    @Override
+    public List<MemberEntity> search(String keyword) {
+        keyword = "%" + keyword + "%";
+        return baseRepository.findAllByUsernameLikeOrFullNameLike(keyword, keyword);
+    }
 }

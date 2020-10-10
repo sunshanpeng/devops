@@ -10,10 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Api(tags = "成员管理")
@@ -27,5 +26,12 @@ public class MemberController extends BaseController<MemberEntity, Long, MemberS
         Page<MemberEntity> page = baseService.pageQuery(queryDTO);
         return BasePageResponse.createSuccessResult(page.getContent(), queryDTO.getPageIndex(),
                 queryDTO.getPageSize(), page.getTotalElements());
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "搜索用户", notes = "关键字搜索")
+    public BaseResponse<List<MemberEntity>> search(@RequestParam String keyword) {
+        List<MemberEntity> list = baseService.search(keyword);
+        return BaseResponse.createSuccessResult(list);
     }
 }
