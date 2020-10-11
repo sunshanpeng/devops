@@ -196,14 +196,34 @@
     },
     methods: {
       onSubmit() {
-        console.log('submit!');
-        this.form.secondary = this.form.secondaryCopy
-        createApp(this.form).then(response => {
-          console.log(response)
+        this.$confirm('确定要保存吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.form.secondary = this.form.secondaryCopy
+          createApp(this.form).then(response => {
+            this.$alert('保存成功!', '', {
+              showCancelButton: false, callback: action => {
+                this.$router.push({
+                  path: '/cmdb/app'
+                })
+              }
+            })
+          })
+        }).catch(() => {
+          //do nothing
         })
       },
       onCancel() {
-        console.log('cancel!');
+        this.$confirm('信息未保存，确定取消本次编辑吗？', '提示', {
+          confirmButtonText: '继续编辑',
+          cancelButtonText: '返回列表页'
+        }).then(() => {
+        }).catch(() => {
+          this.$router.push({
+            path: '/cmdb/app'
+          })
+        })
       },
       remoteUserMethod(keyword) {
         search(keyword).then(response => {
@@ -211,7 +231,7 @@
         })
       },
       primaryChangeHandle(value) {
-        let temp = this.searchUsers.filter(person => person.username == value)
+        let temp = this.searchUsers.filter(person => person.username === value)
         if (temp.length) {
           this.$set(this.form.primary, 'username', temp[0].username)
           this.$set(this.form.primary, 'fullName', temp[0].fullName)
@@ -232,7 +252,6 @@
       init() {
         let dicts = ["appType", "appLevel", "appStatus"]
         dict(dicts).then(response => {
-          console.log(response)
           this.appType = response.model.appType
           this.appLevel = response.model.appLevel
           this.appStatus = response.model.appStatus
