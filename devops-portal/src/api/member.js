@@ -7,7 +7,13 @@ export function list(data) {
     params: data
   })
 }
-
+export function createMember(data) {
+  return request({
+    url: '/member/members',
+    method: 'post',
+    data: data
+  })
+}
 export function search(keyword) {
   return request({
     url: '/member/members/search',

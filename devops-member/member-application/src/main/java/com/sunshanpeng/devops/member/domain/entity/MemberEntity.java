@@ -37,7 +37,7 @@ public class MemberEntity extends BaseEntity {
     @ApiModelProperty(value = "密码", required = true)
     @NotBlank
     @Column(nullable = false)
-    private String password;
+    private String password = "123456";//暂时没用，后期处理
 
     @ApiModelProperty(value = "邮箱", required = true)
     @NotBlank

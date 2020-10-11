@@ -60,7 +60,7 @@
         layout="total, sizes, prev, pager, next">
       </el-pagination>
     </div>
-    <member-detail :option="detailOption"></member-detail>
+    <member-detail :option="detailOption" @refresh="searchHandle"></member-detail>
   </div>
 </template>
 

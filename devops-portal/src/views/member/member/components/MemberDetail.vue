@@ -21,13 +21,15 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="option.dialogVisible = false">保存</el-button>
+      <el-button type="primary" @click="onSubmit">保存</el-button>
       <el-button @click="option.dialogVisible = false">取消</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+  import {createMember} from "@/api/member";
+
   export default {
     name: "MemberDetail",
     props: {
@@ -47,6 +49,18 @@
           phone:'',
           email:'',
         }
+      }
+    },
+    methods: {
+      onSubmit() {
+        createMember(this.form).then(response => {
+          this.$emit('refresh');
+          this.option.dialogVisible = false
+          this.$message({
+            message: '操作成功！',
+            type: 'success'
+          })
+        })
       }
     }
   }
