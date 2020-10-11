@@ -35,7 +35,8 @@ public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationEntity,
                 list.add(criteriaBuilder.like(root.get("name"), "%" + queryDTO.getName() + "%"));
             }
             if (StringUtils.isNotBlank(queryDTO.getParentId())) {
-                list.add(criteriaBuilder.equal(root.get("parentId"), queryDTO.getParentId()));
+                list.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("parentId"), queryDTO.getParentId()),
+                        criteriaBuilder.equal(root.get("id"), queryDTO.getParentId())));
             }
             Predicate[] predicates = list.toArray(new Predicate[0]);
             return criteriaBuilder.and(predicates);
