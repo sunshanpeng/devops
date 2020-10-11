@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="filterItem" placeholder="用户名/姓名" style="width: 200px;" class="filter-item"
+      <el-input v-model="filterItem" placeholder="部门名称" style="width: 200px;" class="filter-item"
                 clearable @keyup.enter.native="searchHandle()"/>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search"
                  @click="searchHandle">
@@ -19,24 +19,14 @@
         :border="true"
         style="width: 100%">
         <el-table-column
-          prop="username"
-          label="用户名"
+          prop="name"
+          label="部门名称"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="fullName"
-          label="姓名"
+          prop="parentId"
+          label="上级部门"
           width="180">
-        </el-table-column>
-        <el-table-column
-          prop="phone"
-          label="手机号"
-          width="160">
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          label="邮箱"
-          width="200">
         </el-table-column>
         <el-table-column
           prop="createTime"
@@ -60,17 +50,17 @@
         layout="total, sizes, prev, pager, next">
       </el-pagination>
     </div>
-    <member-detail :option="detailOption" @refresh="searchHandle"></member-detail>
+    <org-detail :option="detailOption" @refresh="searchHandle"></org-detail>
   </div>
 </template>
 
 <script>
-  import {memberList} from "@/api/member";
-  import MemberDetail from './components/MemberDetail'
+  import {orgList} from "@/api/member";
+  import OrgDetail from './components/OrgDetail'
 
   export default {
     name: "index",
-    components: { MemberDetail },
+    components: { OrgDetail },
     data() {
       return {
         tableData: [],
@@ -92,9 +82,9 @@
         let params = Object.assign({}, {
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
-          username: this.filterItem
+          name: this.filterItem
         });
-        memberList(params).then(response => {
+        orgList(params).then(response => {
           console.log(response)
           this.tableData = response.model
           this.totalCount = response.totalCount

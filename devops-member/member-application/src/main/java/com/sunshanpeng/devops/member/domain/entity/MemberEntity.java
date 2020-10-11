@@ -52,5 +52,6 @@ public class MemberEntity extends BaseEntity {
 
     @ApiModelProperty(hidden = true)
     @Column(name =  DatabaseConst.DELETE_FIELD, columnDefinition = "tinyint default '0'")
+    @Builder.Default
     protected Boolean isDeleted = false;
 }
