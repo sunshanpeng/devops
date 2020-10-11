@@ -60,19 +60,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/member/member',
     name: 'Example',
-    meta: { title: '人员管理', icon: 'el-icon-s-help' },
+    meta: { title: '人员管理'},
     children: [
       {
         path: 'member',
         name: 'Member',
         component: () => import('@/views/member/member/index'),
-        meta: { title: '成员管理', icon: 'table' }
+        meta: { title: '成员管理'}
       },
       {
         path: 'org',
         name: 'Organization',
         component: () => import('@/views/member/organization/index'),
-        meta: { title: '组织结构', icon: 'table' }
+        meta: { title: '组织结构'}
       },
       // {
       //   path: 'tree',
@@ -87,13 +87,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/cmdb/app',
     name: 'CMDB',
-    meta: { title: 'CMDB', icon: 'el-icon-s-help' },
+    meta: { title: 'CMDB'},
     children: [
       {
         path: 'app',
         name: 'App',
         component: () => import('@/views/cmdb/app/index'),
-        meta: { title: '应用管理', icon: 'table' },
+        meta: { title: '应用管理'},
         children: []
       },
       {
@@ -101,14 +101,14 @@ export const constantRoutes = [
         name: 'CreateApp',
         hidden: true,
         component: () => import('@/views/cmdb/app/create'),
-        meta: { title: '新建应用', icon: 'table' }
+        meta: { title: '新建应用'}
       },
       {
         path: 'app/edit/:appName',
         name: 'EditApp',
         hidden: true,
         component: () => import('@/views/cmdb/app/edit'),
-        meta: { title: '编辑应用', icon: 'table' }
+        meta: { title: '编辑应用'}
       }
     ]
   },
