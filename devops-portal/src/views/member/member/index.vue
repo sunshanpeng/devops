@@ -60,13 +60,17 @@
         layout="total, sizes, prev, pager, next">
       </el-pagination>
     </div>
+    <member-detail :option="detailOption"></member-detail>
   </div>
 </template>
 
 <script>
   import {list} from "@/api/member";
+  import MemberDetail from './components/MemberDetail'
+
   export default {
     name: "index",
+    components: { MemberDetail },
     data() {
       return {
         tableData: [],
@@ -75,6 +79,9 @@
         pageSize: 10,
         pageSizes: [10, 20, 50, 100],
         totalCount: 100,
+        detailOption: {
+          dialogVisible: false,
+        }
       }
     },
     mounted() {
@@ -94,7 +101,7 @@
         })
       },
       handleCreate() {
-
+        this.detailOption.dialogVisible = true
       },
       handleSizeChange (pageSize) {
         this.pageSize = pageSize
