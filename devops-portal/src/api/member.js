@@ -37,3 +37,10 @@ export function createOrg(data) {
     data
   })
 }
+
+export function orgTree() {
+  return request({
+    url: '/member/orgs/tree',
+    method: 'get',
+  })
+}

@@ -59,7 +59,13 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门/组">
-            <el-input v-model="form.organization"></el-input>
+            <el-cascader v-model="form.orgValue"
+                         ref="orgCascader"
+                         :options="orgList"
+                         filterable
+                         clearable
+                         @change="orgChangeHandle">
+            </el-cascader>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -148,7 +154,7 @@
 
 <script>
   import {dict, createApp} from "@/api/cmdb";
-  import {search} from "@/api/member";
+  import {search, orgTree} from "@/api/member";
 
   export default {
     name: "AppDetail",
@@ -166,7 +172,8 @@
           appType: '',
           appLevel: '',
           status: '',
-          organization: '',
+          orgValue: [],
+          organization: [],
           ports: '',
           primary: {
             username: '',
@@ -189,6 +196,7 @@
         appLevel: [],
         appStatus: [],
         searchUsers: [],
+        orgList: [],
       }
     },
     mounted() {
@@ -201,6 +209,7 @@
           cancelButtonText: '取消'
         }).then(() => {
           this.form.secondary = this.form.secondaryCopy
+          this.form.organization = this.form.organization.join("/")
           createApp(this.form).then(response => {
             this.$alert('保存成功!', '', {
               showCancelButton: false, callback: action => {
@@ -249,12 +258,25 @@
           }
         }
       },
+      orgChangeHandle(value) {
+        this.form.organization = []
+        let arr = this.$refs.orgCascader.getCheckedNodes()[0].pathLabels
+        for (let i = 0; i < arr.length; i++) {
+          let org = arr[i]
+          if (org.length) {
+            this.form.organization.push(org)
+          }
+        }
+      },
       init() {
         let dicts = ["appType", "appLevel", "appStatus"]
         dict(dicts).then(response => {
           this.appType = response.model.appType
           this.appLevel = response.model.appLevel
           this.appStatus = response.model.appStatus
+        })
+        orgTree().then(response => {
+          this.orgList = response.model
         })
         this.remoteUserMethod('');
       }

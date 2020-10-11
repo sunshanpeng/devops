@@ -2,6 +2,8 @@ package com.sunshanpeng.devops.member.controller;
 
 import com.sunshanpeng.devops.common.base.BaseController;
 import com.sunshanpeng.devops.common.base.BasePageResponse;
+import com.sunshanpeng.devops.common.base.BaseResponse;
+import com.sunshanpeng.devops.common.dto.TreeDTO;
 import com.sunshanpeng.devops.member.domain.entity.OrganizationEntity;
 import com.sunshanpeng.devops.member.dto.OrgPageQueryDTO;
 import com.sunshanpeng.devops.member.service.OrganizationService;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @Api(tags = "组织管理")
@@ -25,5 +29,11 @@ public class OrganizationController extends BaseController<OrganizationEntity, L
         Page<OrganizationEntity> page = baseService.pageQuery(queryDTO);
         return BasePageResponse.createSuccessResult(page.getContent(), queryDTO.getPageIndex(),
                 queryDTO.getPageSize(), page.getTotalElements());
+    }
+
+    @GetMapping("/tree")
+    @ApiOperation(value = "组织树", notes = "查询整个组织树或指定根下组织")
+    public BaseResponse<List<TreeDTO>> tree(Long rootId) {
+        return BaseResponse.createSuccessResult(baseService.tree(rootId));
     }
 }

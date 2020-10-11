@@ -33,7 +33,7 @@ public class OrganizationEntity extends BaseEntity {
     @ApiModelProperty(value = "上级组织", required = true)
     @NotBlank
     @Column(nullable = false)
-    private String parentId;
+    private Long parentId;
 
     @ApiModelProperty(hidden = true)
     @Column(name =  DatabaseConst.DELETE_FIELD, nullable = false, columnDefinition = "tinyint default '0'")

@@ -33,6 +33,7 @@
         <common-web.version>0.0.1-SNAPSHOT</common-web.version>
         <common-core.version>0.0.1-SNAPSHOT</common-core.version>
         <common-resource.version>0.0.1-SNAPSHOT</common-resource.version>
+        <hutool.version>5.4.4</hutool.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,11 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>
