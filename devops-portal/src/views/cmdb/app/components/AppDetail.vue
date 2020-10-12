@@ -115,8 +115,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="制品路径">
-            <el-input v-model="form.artifactPath"></el-input>
+          <el-form-item label="部署文件">
+            <el-input v-model="form.artifactPath" placeholder="比如:target/app.jar或者dist"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

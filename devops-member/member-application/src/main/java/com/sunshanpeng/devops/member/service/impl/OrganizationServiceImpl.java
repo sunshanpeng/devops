@@ -42,7 +42,7 @@ public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationEntity,
             return criteriaBuilder.and(predicates);
         };
         Pageable pageable = PageRequest.of(queryDTO.getPageIndex(),
-                queryDTO.getPageSize(), Sort.Direction.DESC, "id")
+                queryDTO.getPageSize(), Sort.Direction.ASC, "parentId")
                 //分页插件下标从0开始，第1页下标为0
                 .previous();
         return baseRepository.findAll(specification, pageable);
