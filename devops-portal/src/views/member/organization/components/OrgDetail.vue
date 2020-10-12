@@ -11,7 +11,13 @@
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="上级组织">
-        <el-input v-model="form.parentId" autocomplete="off"></el-input>
+        <el-cascader
+          v-model="form.parentId"
+          :options="orgList"
+          :props="{ checkStrictly: true }"
+          clearable
+          @change="orgChangeHandle">
+        </el-cascader>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -22,7 +28,7 @@
 </template>
 
 <script>
-  import {createOrg} from "@/api/member";
+  import {createOrg, orgTree} from "@/api/member";
 
   export default {
     name: "MemberDetail",
@@ -37,13 +43,20 @@
     },
     data() {
       return {
-        form : {
-          name:'',
-          parentId:'',
-        }
+        form: {
+          name: '',
+          parentId: '',
+        },
+        orgList: [],
       }
     },
+    mounted() {
+      this.init()
+    },
     methods: {
+      orgChangeHandle(value) {
+        this.form.parentId = value[value.length - 1];
+      },
       onSubmit() {
         createOrg(this.form).then(response => {
           this.$emit('refresh');
@@ -52,6 +65,11 @@
             message: '操作成功！',
             type: 'success'
           })
+        })
+      },
+      init() {
+        orgTree().then(response => {
+          this.orgList = response.model
         })
       }
     }

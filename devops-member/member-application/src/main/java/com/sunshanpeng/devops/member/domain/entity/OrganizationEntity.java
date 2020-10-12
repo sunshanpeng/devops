@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -31,7 +32,7 @@ public class OrganizationEntity extends BaseEntity {
     private String name;
 
     @ApiModelProperty(value = "上级组织", required = true)
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private Long parentId;
 
