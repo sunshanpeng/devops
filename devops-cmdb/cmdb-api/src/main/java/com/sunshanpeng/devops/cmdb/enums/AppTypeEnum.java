@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Dict(key = "appType", desc = "应用类型")
 public enum AppTypeEnum implements BaseEnum {
 
-    SPRING_BOOT("SPRING_BOOT"),
-    JAVA_WEB("JAVA_WEB"),
+    JAVA("JAVA"),
     VUE("VUE"),
     PHP("PHP"),
+    NODE_JS("NODE_JS"),
     ;
 
     AppTypeEnum(String value) {
