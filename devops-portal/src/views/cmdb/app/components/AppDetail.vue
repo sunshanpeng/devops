@@ -110,7 +110,7 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="代码地址">
+          <el-form-item label="git地址">
             <el-input v-model="form.codeUrl"></el-input>
           </el-form-item>
         </el-col>

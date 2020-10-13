@@ -13,16 +13,17 @@ import java.util.stream.Collectors;
 @Dict(key = "appLevel", desc = "应用等级")
 public enum AppLevelEnum implements BaseEnum {
 
-    P1("P1"),
-    P2("P2"),
-    P3("P3"),
+    P1("P1","核心应用"),
+    P2("P2","非核心应用"),
     ;
 
-    AppLevelEnum(String value) {
+    AppLevelEnum(String value, String label) {
         this.value = value;
+        this.label = label;
     }
 
     private String value;
+    private String label;
 
     @Override
     public Object getValue() {
@@ -31,7 +32,7 @@ public enum AppLevelEnum implements BaseEnum {
 
     @Override
     public Object getLabel() {
-        return value;
+        return label;
     }
 
     @Override
