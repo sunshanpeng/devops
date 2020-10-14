@@ -7,6 +7,7 @@ public interface CBHConst {
 
     String LOGIN_URL = CBH_HOST + "/3.0/authService/login";
     String USER_LIST = CBH_HOST + "/3.0/userService/userList";
+    String ADD_USER = CBH_HOST + "/3.0/userService/addUser";
     String USER_DETAIL = CBH_HOST + "/3.0/userService/userDetail";
     String USER_GROUP_LIST = CBH_HOST + "/3.0/userGroupService/userGroupList";
     String ACCOUNT_LIST = CBH_HOST + "/3.0/userService/accountList";
