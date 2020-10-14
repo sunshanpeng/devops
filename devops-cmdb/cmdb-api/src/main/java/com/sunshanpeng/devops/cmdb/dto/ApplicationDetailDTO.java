@@ -3,9 +3,11 @@ package com.sunshanpeng.devops.cmdb.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("应用详细信息")
 public class ApplicationDetailDTO extends ApplicationDTO{

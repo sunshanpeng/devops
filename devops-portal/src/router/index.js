@@ -66,7 +66,7 @@ export const constantRoutes = [
         path: 'member',
         name: 'Member',
         component: () => import('@/views/member/member/index'),
-        meta: { title: '成员管理'}
+        meta: { title: '成员列表'}
       },
       {
         path: 'org',
@@ -93,7 +93,7 @@ export const constantRoutes = [
         path: 'app',
         name: 'App',
         component: () => import('@/views/cmdb/app/index'),
-        meta: { title: '应用管理'},
+        meta: { title: '应用列表'},
         children: []
       },
       {
@@ -109,6 +109,13 @@ export const constantRoutes = [
         hidden: true,
         component: () => import('@/views/cmdb/app/edit'),
         meta: { title: '编辑应用'}
+      },
+      {
+        path: 'app/overview/:appName',
+        name: 'AppOverview',
+        // hidden: true,
+        component: () => import('@/views/cmdb/app/overview'),
+        meta: { title: '应用管理'}
       }
     ]
   },

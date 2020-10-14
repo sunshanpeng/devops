@@ -1,12 +1,12 @@
 package com.sunshanpeng.devops.cmdb.domain.entity;
 
 import com.sunshanpeng.devops.common.base.BaseEntity;
-import com.sunshanpeng.devops.common.converter.IntegerListConverter;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -36,6 +36,9 @@ public class AppInfoEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String ports;
+
+    @Column(nullable = false)
+    private String buCode;
 
     @Column(nullable = false)
     private String organization;
