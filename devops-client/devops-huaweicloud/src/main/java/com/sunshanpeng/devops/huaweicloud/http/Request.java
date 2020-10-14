@@ -22,14 +22,14 @@ import java.util.Date;
 
 public class Request {
 
-    public static final ThreadLocal<String> TOKEN = ThreadLocal.withInitial(() -> "");
+    public static String TOKEN ;
     public static final ThreadLocal<Long> TIMESTAMP = ThreadLocal.withInitial(() -> null);
     public static final ThreadLocal<Long> LOCALTIME = ThreadLocal.withInitial(() -> null);
 
 
     public static Response cbhPost(String url, String body, boolean encrypt) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, IOException {
         if (encrypt) {
-            String token = TOKEN.get().substring(8, 24);
+            String token = TOKEN.substring(8, 24);
             body = EncryptUtil.encrypt(body, token, CBHConst.IV);
         }
 
@@ -58,7 +58,7 @@ public class Request {
         httpPost.addHeader("Origin", CBHConst.CBH_HOST);
         httpPost.addHeader("timestamp", String.valueOf(timestamp));
         httpPost.addHeader("nonce", nonce);
-        httpPost.addHeader("cookie", "YAB_AUTH_TOKEN=" + TOKEN.get());
+        httpPost.addHeader("cookie", "YAB_AUTH_TOKEN=" + TOKEN);
 
         return doRequest(httpPost);
     }
