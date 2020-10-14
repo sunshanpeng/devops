@@ -21,9 +21,22 @@ public class User extends Base {
         throw new RuntimeException(content);
     }
 
+    private static void accountList() throws Exception {
+        Response response =
+                Request.cbhPost(CBHConst.ACCOUNT_LIST, CBHConst.PAGE_ID_JSON, true);
+        String content = response.getContent();
+        if (response.getStatusCode() == 200) {
+            JSONObject jsonObject = JSON.parseObject(content);
+            if (jsonObject.getJSONObject("data") != null) {
+                System.out.println(jsonObject.getJSONObject("data"));
+            }
+            return;
+        }
+        throw new RuntimeException(content);
+    }
     public static void main(String[] args) throws Exception {
         config();
         login();
-        userList();
+        accountList();
     }
 }
