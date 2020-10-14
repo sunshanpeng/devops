@@ -51,8 +51,4 @@ public class Base {
         throw new RuntimeException(content);
     }
 
-    public static void main(String[] args) throws Exception {
-        config();
-        login();
-    }
 }

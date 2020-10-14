@@ -12,6 +12,6 @@ public interface CBHConst {
     String CONFIG = CBH_HOST + "/3.0/authService/config";
 
 
-    public static final String PAGE_JSON = "{\"c\": {}, \"b\": {\"page\": 1, \"pageSize\": 200}}";
-    public static final String CONFIG_JSON = "{\"c\": {}, \"b\": {}}";
+    String PAGE_JSON = "{\"c\": {}, \"b\": {\"page\": 1, \"pageSize\": 200}}";
+    String CONFIG_JSON = "{\"c\": {}, \"b\": {}}";
 }
