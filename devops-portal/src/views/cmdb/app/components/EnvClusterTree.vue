@@ -38,11 +38,12 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log("select:"+key, keyPath)
+        console.log("select:", key, keyPath)
         this.env = keyPath[0]
         this.cluster = keyPath[1]
       },
       init() {
+        this.appName = this.$route.params.appName
         envClusterTree().then(response => {
           this.envs = response.model
           this.openeds = response.model.map((item) => {
