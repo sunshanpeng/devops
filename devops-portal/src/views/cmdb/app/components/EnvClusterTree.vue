@@ -1,17 +1,17 @@
 <template>
   <el-menu
-    @open="handleOpen"
-    @close="handleClose"
+    @select="handleSelect"
+    :default-active="env"
     :default-openeds="openeds">
-    <el-submenu v-for="item in envs" :key="item.envCode" :index="item.envCode">
+    <el-submenu v-for="item in envs" :key="item.value" :index="item.value">
       <template slot="title">
         <i class="eboss-icon-menu"></i>
-        <span>{{item.envName}}</span>
+        <span>{{item.label}}</span>
       </template>
-      <template v-if="item.clusters" v-for="(child , index2) in item.clusters">
-        <el-menu-item :index="child.clusterCode" :key="child.clusterCode">
+      <template v-if="item.children" v-for="(child , index2) in item.children">
+        <el-menu-item :index="child.value" :key="child.value">
           <a>
-            {{child.clusterName}}
+            {{child.label}}
           </a>
         </el-menu-item>
       </template>
@@ -20,34 +20,35 @@
 </template>
 
 <script>
+  import {envClusterTree} from "@/api/cmdb"
+
   export default {
     name: "EnvClusterTree",
     data() {
       return {
-        openeds: ["dev","test"],    //当前展示菜单id
-        envs: [{
-          envCode: "dev",
-          envName: "DEV",
-          clusters: [{
-            clusterCode: "huawei1",
-            clusterName: "华为开发集群"
-          }]
-        },{
-          envCode: "test",
-          envName: "TEST",
-          clusters: [{
-            clusterCode: "huawei2",
-            clusterName: "华为测试集群"
-          }]
-        }],
+        openeds: [],    //当前展示菜单id
+        envs: [],
+        env: '',
+        cluster: '',
+        appName: '',
       }
     },
+    mounted() {
+      this.init()
+    },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+      handleSelect(key, keyPath) {
+        console.log("select:"+key, keyPath)
+        this.env = keyPath[0]
+        this.cluster = keyPath[1]
       },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
+      init() {
+        envClusterTree().then(response => {
+          this.envs = response.model
+          this.openeds = response.model.map((item) => {
+            return item.value
+          })
+        })
       }
     }
   }

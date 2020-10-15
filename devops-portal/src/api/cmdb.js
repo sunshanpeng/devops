@@ -20,3 +20,9 @@ export function dict(params) {
     method: 'get',
   })
 }
+export function envClusterTree() {
+  return request({
+    url: `/cmdb/envs/clusters`,
+    method: 'get',
+  })
+}
