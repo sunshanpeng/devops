@@ -81,9 +81,8 @@ public class JsonUtil {
         return readValue(json, t);
     }
 
-    public static <T> List<T> toList(String json) {
-        Optional<List<T>> optionalList = readValue(json, new TypeReference<List<T>>(){});
-        return optionalList.orElse(Collections.emptyList());
+    public static <T> Optional<T> toBean(String json, TypeReference<T> t) {
+        return readValue(json, t);
     }
 
     public static <K, V> Map<K, V> toMap(String json) {
