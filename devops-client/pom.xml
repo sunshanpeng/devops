@@ -15,7 +15,6 @@
     <modules>
         <module>devops-jumpserver</module>
         <module>devops-jenkins</module>
-        <module>devops-huaweicloud</module>
         <module>devops-gitlab</module>
         <module>devops-aliyun</module>
         <module>devops-ldap</module>
