@@ -12,6 +12,7 @@ import com.sunshanpeng.devops.cmdb.enums.AppUserTypeEnum;
 import com.sunshanpeng.devops.cmdb.service.AppInfoService;
 import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
+import com.sunshanpeng.devops.common.exception.BusinessException;
 import com.sunshanpeng.devops.common.util.BeanUtil;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.data.domain.Page;
@@ -74,7 +75,9 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
     }
 
     private void beforeSave(ApplicationDetailDTO application) {
-        // validate
+        if (baseRepository.findByAppName(application.getAppName()) != null) {
+            throw new BusinessException(String.format("应用名%s已存在", application.getAppName()));
+        }
     }
 
     private void doSave(ApplicationDetailDTO application) {
