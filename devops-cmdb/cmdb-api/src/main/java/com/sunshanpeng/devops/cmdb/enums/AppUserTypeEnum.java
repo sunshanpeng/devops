@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public enum AppUserTypeEnum implements BaseEnum {
     PRIMARY("primary", "主要负责人"),
     SECONDARY("secondary", "次要负责人"),
+    QA("qa", "质量负责人"),
     ;
     AppUserTypeEnum(String value, String label) {
         this.value = value;

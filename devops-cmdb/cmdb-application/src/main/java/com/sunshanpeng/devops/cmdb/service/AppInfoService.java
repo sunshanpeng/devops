@@ -7,10 +7,14 @@ import com.sunshanpeng.devops.cmdb.dto.ApplicationPageQueryDTO;
 import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseService;
 
+import java.util.Optional;
+
 public interface AppInfoService extends BaseService<AppInfoEntity, Long>{
     void save(ApplicationDetailDTO application);
 
-    ApplicationDTO findByAppName(String appName);
+    Optional<ApplicationDTO> findByAppName(String appName);
 
     BasePageResponse<ApplicationDTO> pageQuery(ApplicationPageQueryDTO queryDTO);
+
+    Optional<ApplicationDetailDTO> getDetail(String appName);
 }

@@ -26,7 +26,7 @@ public class MonitorEntity extends BaseEntity {
     private String monitorType;
 
     @Column(nullable = false)
-    private String monitorPort;
+    private Integer monitorPort;
 
     @Column(nullable = false)
     private String monitorPath;

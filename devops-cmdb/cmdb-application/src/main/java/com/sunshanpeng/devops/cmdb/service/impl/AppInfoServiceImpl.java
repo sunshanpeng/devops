@@ -2,19 +2,22 @@ package com.sunshanpeng.devops.cmdb.service.impl;
 
 import com.sunshanpeng.devops.cmdb.domain.entity.AppInfoEntity;
 import com.sunshanpeng.devops.cmdb.domain.entity.AppUserEntity;
+import com.sunshanpeng.devops.cmdb.domain.entity.CiInfoEntity;
+import com.sunshanpeng.devops.cmdb.domain.entity.MonitorEntity;
 import com.sunshanpeng.devops.cmdb.domain.repository.AppInfoRepository;
 import com.sunshanpeng.devops.cmdb.domain.repository.AppUserRepository;
-import com.sunshanpeng.devops.cmdb.dto.AppUserDTO;
-import com.sunshanpeng.devops.cmdb.dto.ApplicationDTO;
-import com.sunshanpeng.devops.cmdb.dto.ApplicationDetailDTO;
-import com.sunshanpeng.devops.cmdb.dto.ApplicationPageQueryDTO;
+import com.sunshanpeng.devops.cmdb.domain.repository.CiInfoRepository;
+import com.sunshanpeng.devops.cmdb.domain.repository.MonitorRepository;
+import com.sunshanpeng.devops.cmdb.dto.*;
 import com.sunshanpeng.devops.cmdb.enums.AppUserTypeEnum;
+import com.sunshanpeng.devops.cmdb.enums.MonitorTypeEnum;
 import com.sunshanpeng.devops.cmdb.service.AppInfoService;
 import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.exception.BusinessException;
 import com.sunshanpeng.devops.common.util.BeanUtil;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +37,12 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
 
     @Resource
     private AppUserRepository appUserRepository;
+    @Resource
+    private CiInfoRepository ciInfoRepository;
+    @Resource
+    private MonitorRepository monitorRepository;
+    @Resource
+    private ApplicationEventPublisher publisher;
 
     @Override
     public void save(ApplicationDetailDTO application) {
@@ -43,11 +52,38 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
 
         afterSave(application);
     }
+    @Override
+    public Optional<ApplicationDTO> findByAppName(String appName) {
+        Optional<AppInfoEntity> appInfoEntity = baseRepository.findByAppName(appName);
+        if (!appInfoEntity.isPresent()) {
+            return Optional.empty();
+        }
+        ApplicationDTO applicationDTO = converter(appInfoEntity.get());
+        return Optional.ofNullable(applicationDTO);
+    }
 
     @Override
-    public ApplicationDTO findByAppName(String appName) {
-        AppInfoEntity appInfoEntity = baseRepository.findByAppName(appName);
-        return converter(appInfoEntity);
+    public Optional<ApplicationDetailDTO> getDetail(String appName) {
+        Optional<ApplicationDTO> applicationDTOOptional = findByAppName(appName);
+        if (!applicationDTOOptional.isPresent()) {
+            return Optional.empty();
+        }
+        ApplicationDetailDTO detailDTO = BeanUtil.copy(applicationDTOOptional.get(), ApplicationDetailDTO.class);
+        Optional<CiInfoEntity> ciInfoEntityOptional = ciInfoRepository.findByAppName(appName);
+        ciInfoEntityOptional.ifPresent(ciInfoEntity -> {
+            detailDTO.setCodeUrl(ciInfoEntity.getCodeUrl());
+            detailDTO.setArtifactPath(ciInfoEntity.getArtifactPath());
+        });
+
+        List<MonitorEntity> monitors = monitorRepository.findByAppName(appName);
+        monitors.stream().filter(monitor -> MonitorTypeEnum.READINESS.getValue().equals(monitor.getMonitorType()))
+                .findFirst().ifPresent(monitor -> detailDTO.setReadiness(new MonitorDTO(monitor.getMonitorPort(), monitor.getMonitorPath())));
+        monitors.stream().filter(monitor -> MonitorTypeEnum.LIVENESS.getValue().equals(monitor.getMonitorType()))
+                .findFirst().ifPresent(monitor -> detailDTO.setLiveness(new MonitorDTO(monitor.getMonitorPort(), monitor.getMonitorPath())));
+        List<MonitorDTO> monitorList = monitors.stream().filter(monitor -> MonitorTypeEnum.PROMETHEUS.getValue().equals(monitor.getMonitorType()))
+                .map(monitor -> new MonitorDTO(monitor.getMonitorPort(), monitor.getMonitorPath())).collect(Collectors.toList());
+        detailDTO.setPrometheus(monitorList);
+        return Optional.of(detailDTO);
     }
 
     @Override
@@ -75,8 +111,9 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
     }
 
     private void beforeSave(ApplicationDetailDTO application) {
-        if (baseRepository.findByAppName(application.getAppName()) != null) {
-            throw new BusinessException(String.format("应用名%s已存在", application.getAppName()));
+        // validate
+        if (baseRepository.findByAppName(application.getAppName()).isPresent()) {
+            throw new BusinessException(String.format("应用名%s已存在",application.getAppName()));
         }
     }
 
@@ -101,11 +138,18 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, App
         List<AppUserEntity> secondary = appUserEntityList.stream().filter(appUserEntity ->
                 AppUserTypeEnum.SECONDARY.getValue().equals(appUserEntity.getAppUserType()))
                 .collect(Collectors.toList());
-        primary.ifPresent(user -> applicationDTO.setPrimary(user.getAppName(), user.getFullName()));
+        List<AppUserEntity> qa = appUserEntityList.stream().filter(appUserEntity ->
+                AppUserTypeEnum.QA.getValue().equals(appUserEntity.getAppUserType()))
+                .collect(Collectors.toList());
+        primary.ifPresent(user -> applicationDTO.setPrimary(user.getUsername(), user.getFullName()));
         List<AppUserDTO> secondaryUsers = secondary.stream().map(appUserEntity ->
                 new AppUserDTO(appUserEntity.getUsername(), appUserEntity.getFullName()))
                 .collect(Collectors.toList());
         applicationDTO.setSecondary(secondaryUsers);
+        List<AppUserDTO> qaUsers = qa.stream().map(appUserEntity ->
+                new AppUserDTO(appUserEntity.getUsername(), appUserEntity.getFullName()))
+                .collect(Collectors.toList());
+        applicationDTO.setQa(qaUsers);
         return applicationDTO;
     }
 }

@@ -41,5 +41,8 @@ public class AppInfoEntity extends BaseEntity {
     private String buCode;
 
     @Column(nullable = false)
-    private String organization;
+    private String orgId;
+
+    @Column(nullable = false)
+    private String orgName;
 }
