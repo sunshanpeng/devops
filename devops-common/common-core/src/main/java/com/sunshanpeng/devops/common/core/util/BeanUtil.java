@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.common.util;
+package com.sunshanpeng.devops.common.core.util;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;

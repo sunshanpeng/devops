@@ -4,7 +4,7 @@ import com.sunshanpeng.devops.cmdb.domain.entity.MetaConfigEntity;
 import com.sunshanpeng.devops.cmdb.domain.repository.MetaConfigRepository;
 import com.sunshanpeng.devops.cmdb.service.ConfigService;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
-import com.sunshanpeng.devops.common.base.KeyValueDTO;
+import com.sunshanpeng.devops.common.core.dto.KeyValueDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

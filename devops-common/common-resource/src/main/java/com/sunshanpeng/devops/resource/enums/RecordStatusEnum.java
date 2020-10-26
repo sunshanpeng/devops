@@ -1,7 +1,7 @@
 package com.sunshanpeng.devops.resource.enums;
 
-import com.sunshanpeng.devops.common.base.BaseEnum;
-import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import com.sunshanpeng.devops.common.core.base.BaseEnum;
+import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 import lombok.Getter;
 
 import java.util.Arrays;

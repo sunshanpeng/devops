@@ -15,7 +15,7 @@ import com.sunshanpeng.devops.cmdb.service.AppInfoService;
 import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.exception.BusinessException;
-import com.sunshanpeng.devops.common.util.BeanUtil;
+import com.sunshanpeng.devops.common.core.util.BeanUtil;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;

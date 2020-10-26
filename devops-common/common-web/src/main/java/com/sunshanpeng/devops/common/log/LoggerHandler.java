@@ -1,7 +1,7 @@
 package com.sunshanpeng.devops.common.log;
 
 import com.sunshanpeng.devops.common.enums.LogTypeEnum;
-import com.sunshanpeng.devops.common.util.JsonUtil;
+import com.sunshanpeng.devops.common.core.util.JsonUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

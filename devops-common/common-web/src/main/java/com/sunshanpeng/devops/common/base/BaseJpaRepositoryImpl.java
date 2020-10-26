@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.common.base;
 
-import com.sunshanpeng.devops.common.util.BeanUtil;
+import com.sunshanpeng.devops.common.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

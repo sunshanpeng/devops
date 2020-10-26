@@ -1,7 +1,7 @@
 package com.sunshanpeng.devops.common.enums.dict;
 
 import com.sunshanpeng.devops.common.base.BaseResponse;
-import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

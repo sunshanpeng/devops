@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.common.base;
+package com.sunshanpeng.devops.common.core.base;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

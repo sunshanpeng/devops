@@ -1,4 +1,6 @@
-package com.sunshanpeng.devops.common.base;
+package com.sunshanpeng.devops.common.core.base;
+
+import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 
 import java.util.List;
 

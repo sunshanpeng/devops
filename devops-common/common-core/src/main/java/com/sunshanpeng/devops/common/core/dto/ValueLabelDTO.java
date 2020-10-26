@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.common.base;
+package com.sunshanpeng.devops.common.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

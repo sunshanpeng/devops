@@ -4,7 +4,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.pvtz.model.v20180101.*;
 import com.google.common.collect.Lists;
 import com.sunshanpeng.devops.common.exception.BusinessException;
-import com.sunshanpeng.devops.common.util.JsonUtil;
+import com.sunshanpeng.devops.common.core.util.JsonUtil;
 import com.sunshanpeng.devops.resource.dto.DomainRecordDTO;
 import com.sunshanpeng.devops.resource.enums.RecordStatusEnum;
 import lombok.extern.slf4j.Slf4j;

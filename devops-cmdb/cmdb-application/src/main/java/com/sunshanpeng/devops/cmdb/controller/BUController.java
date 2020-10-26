@@ -4,7 +4,7 @@ import com.sunshanpeng.devops.cmdb.domain.entity.BusinessUnitEntity;
 import com.sunshanpeng.devops.cmdb.service.BUService;
 import com.sunshanpeng.devops.common.base.BaseController;
 import com.sunshanpeng.devops.common.base.BaseResponse;
-import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

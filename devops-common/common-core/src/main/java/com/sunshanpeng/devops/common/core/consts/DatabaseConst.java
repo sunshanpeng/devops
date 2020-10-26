@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.common.consts;
+package com.sunshanpeng.devops.common.core.consts;
 
 /**
  * 数据库常量类

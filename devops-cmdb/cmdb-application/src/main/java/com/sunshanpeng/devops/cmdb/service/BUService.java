@@ -2,7 +2,7 @@ package com.sunshanpeng.devops.cmdb.service;
 
 import com.sunshanpeng.devops.cmdb.domain.entity.BusinessUnitEntity;
 import com.sunshanpeng.devops.common.base.BaseService;
-import com.sunshanpeng.devops.common.base.ValueLabelDTO;
+import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 
 import java.util.List;
 

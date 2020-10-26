@@ -1,6 +1,6 @@
 package com.sunshanpeng.devops.common.configuration;
 
-import com.sunshanpeng.devops.common.base.BaseEnum;
+import com.sunshanpeng.devops.common.core.base.BaseEnum;
 import com.sunshanpeng.devops.common.enums.dict.DictController;
 import com.sunshanpeng.devops.common.enums.dict.DictService;
 import lombok.extern.slf4j.Slf4j;

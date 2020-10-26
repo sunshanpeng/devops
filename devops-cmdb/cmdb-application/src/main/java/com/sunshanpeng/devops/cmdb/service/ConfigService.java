@@ -2,7 +2,7 @@ package com.sunshanpeng.devops.cmdb.service;
 
 import com.sunshanpeng.devops.cmdb.domain.entity.MetaConfigEntity;
 import com.sunshanpeng.devops.common.base.BaseService;
-import com.sunshanpeng.devops.common.base.KeyValueDTO;
+import com.sunshanpeng.devops.common.core.dto.KeyValueDTO;
 
 import java.util.List;
 

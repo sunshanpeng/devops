@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.common.util;
+package com.sunshanpeng.devops.common.core.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
