@@ -1,11 +1,15 @@
 package com.sunshanpeng.devops.common.core.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -13,7 +17,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -104,5 +110,20 @@ public class JsonUtil {
         OBJECT_MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
         OBJECT_MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        OBJECT_MAPPER.registerModule(new StringTrimModule());
+    }
+}
+
+/**
+ * 去掉RequestBody中字段的前后空格
+ */
+class StringTrimModule extends SimpleModule {
+    StringTrimModule() {
+        addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
+            @Override
+            public String deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+                return StringUtils.trimWhitespace(jp.getValueAsString());
+            }
+        });
     }
 }
