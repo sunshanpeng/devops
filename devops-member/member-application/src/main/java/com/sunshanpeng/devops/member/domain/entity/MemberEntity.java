@@ -1,7 +1,7 @@
 package com.sunshanpeng.devops.member.domain.entity;
 
 import com.sunshanpeng.devops.common.base.BaseEntity;
-import com.sunshanpeng.devops.common.consts.DatabaseConst;
+import com.sunshanpeng.devops.common.core.consts.DatabaseConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
