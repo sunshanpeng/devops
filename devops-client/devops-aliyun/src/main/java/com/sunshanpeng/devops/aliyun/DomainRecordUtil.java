@@ -56,12 +56,7 @@ public class DomainRecordUtil {
                 .filter(record -> RecordStatusEnum.ENABLE.getAliPrivateZone().equals(record.getStatus()))
                 .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(records)) {
-            AddDomainRecordRequest addDomainRecordRequest = new AddDomainRecordRequest();
-            addDomainRecordRequest.setDomainName(domainRecord.getDomainName());
-            addDomainRecordRequest.setRR(domainRecord.getRr());
-            addDomainRecordRequest.setValue(domainRecord.getValue());
-            addDomainRecordRequest.setType(domainRecord.getRecordType().getValue());
-            aliyunClient.doAction(addDomainRecordRequest);
+            addDomainRecord(domainRecord);
             return;
         }
 
@@ -77,6 +72,20 @@ public class DomainRecordUtil {
         aliyunClient.doAction(updateDomainRecordRequest);
     }
 
+    /**
+     * 新增解析记录
+     * @param domainRecord
+     * @throws ClientException
+     */
+    public void addIfNotExist(@NotNull DomainRecordDTO domainRecord) throws ClientException {
+        List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainRecord.getFullDomain()).stream()
+                .filter(record -> RecordStatusEnum.ENABLE.getAliPrivateZone().equals(record.getStatus()))
+                .collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(records)) {
+            return;
+        }
+        addDomainRecord(domainRecord);
+    }
     /**
      * 删除解析记录
      * @param domainName
@@ -127,5 +136,14 @@ public class DomainRecordUtil {
 
     public DomainRecordUtil(AliyunClient aliyunClient) {
         this.aliyunClient = aliyunClient;
+    }
+
+    private void addDomainRecord(@NotNull DomainRecordDTO domainRecord) throws ClientException {
+        AddDomainRecordRequest addDomainRecordRequest = new AddDomainRecordRequest();
+        addDomainRecordRequest.setDomainName(domainRecord.getDomainName());
+        addDomainRecordRequest.setRR(domainRecord.getRr());
+        addDomainRecordRequest.setValue(domainRecord.getValue());
+        addDomainRecordRequest.setType(domainRecord.getRecordType().getValue());
+        aliyunClient.doAction(addDomainRecordRequest);
     }
 }
