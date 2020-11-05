@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,5 +50,10 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, Membe
         return baseRepository.findAllByUsernameLikeOrFullNameLike(keyword, keyword)
                 .stream().map(memberEntity -> BeanUtil.copy(memberEntity, SimpleMemberDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<MemberEntity> get(String username) {
+        return baseRepository.findByUsername(username);
     }
 }

@@ -8,10 +8,13 @@ import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberService extends BaseService<MemberEntity, Long> {
 
     Page<MemberEntity> pageQuery(@NotNull MemberPageQueryDTO queryDTO);
 
     List<SimpleMemberDTO> search(String keyword);
+
+    Optional<MemberEntity> get(String username);
 }
