@@ -113,7 +113,7 @@ export const constantRoutes = [
       {
         path: 'app/overview/:appName',
         name: 'AppOverview',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/cmdb/app/overview'),
         meta: { title: '应用管理'}
       }

@@ -19,9 +19,15 @@
       :border="true"
       style="width: 100%">
       <el-table-column
-        prop="appName"
         label="应用名"
         width="180">
+        <template slot-scope="scope">
+          <router-link :to="{path: '/cmdb/app/overview/'+scope.row.appName}">
+            <el-link type="primary">
+              {{scope.row.appName}}
+            </el-link>
+          </router-link>
+        </template>
       </el-table-column>
       <el-table-column
         prop="appDescription"

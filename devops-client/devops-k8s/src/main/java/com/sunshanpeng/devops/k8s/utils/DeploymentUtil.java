@@ -6,6 +6,7 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class DeploymentUtil {
         return client.apps().deployments().inNamespace(namespace).withName(appName).get();
     }
 
-    public static Deployment create(@NotBlank String clusterCode, @NotNull DeploymentDTO deploymentDTO) throws IOException {
+    public static Deployment create(@NotBlank String clusterCode, @Validated @NotNull DeploymentDTO deploymentDTO) throws IOException {
         KubernetesClient client = KubeConfig.getClient(clusterCode);
         Deployment deployment = get(clusterCode, deploymentDTO.getNamespace(), deploymentDTO.getAppName());
         if (deployment != null) {
