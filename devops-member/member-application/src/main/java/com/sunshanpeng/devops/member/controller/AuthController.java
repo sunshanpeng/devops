@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.core.util.MD5Util;
 import com.sunshanpeng.devops.common.exception.BusinessException;
+import com.sunshanpeng.devops.ldap.LdapClient;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.LoginDTO;
 import com.sunshanpeng.devops.member.service.MemberService;
@@ -30,6 +31,8 @@ public class AuthController {
     private String secretKey;
     @Resource
     private MemberService memberService;
+    @Resource
+    private LdapClient ldapClient;
 
     private String encryptKey = "oQSEjMa5KAp4n9bG";
     private static final Integer tokenExpireTime = 24 * 60 * 60 * 1000;
@@ -41,9 +44,9 @@ public class AuthController {
         if (!memberEntityOptional.isPresent()) {
             throw new BusinessException("用户不存在");
         }
-
+        boolean ldapAuth = ldapClient.ldapAuth(loginDTO.getUsername(), loginDTO.getPassword());
         try {
-            if (!Objects.equals(MD5Util.crypt(loginDTO.getPassword() + encryptKey),
+            if (!ldapAuth && !Objects.equals(MD5Util.crypt(loginDTO.getPassword() + encryptKey),
                     memberEntityOptional.get().getPassword())) {
                 throw new BusinessException("用户名或者密码错误");
             }
