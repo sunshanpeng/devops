@@ -8,7 +8,9 @@
         搜索
       </el-button>
       <router-link :to="{path: '/cmdb/app/create'}">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
+        <el-button class="filter-item" style="margin-left: 10px;"
+                   v-permission="['admin']"
+                   type="primary" icon="el-icon-edit">
           新增
         </el-button>
       </router-link>
@@ -47,6 +49,16 @@
         prop="modifyTime"
         label="修改时间">
       </el-table-column>
+      <el-table-column label="操作" width="160">
+        <template slot-scope="scope">
+          <router-link :to="{path: '/cmdb/app/view/'+scope.row.appName}">
+            <el-button type="text" size="small">详情</el-button>
+          </router-link>
+          <router-link :to="{path: '/cmdb/app/edit/'+scope.row.appName}">
+            <el-button v-if="isAdmin(scope.row)" type="text" size="small">编辑</el-button>
+          </router-link>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div class="page-container">
@@ -68,9 +80,13 @@
 
 <script>
   import {list} from "@/api/cmdb";
+  import checkPermission from '@/utils/permission' // 权限判断函数
+  import permission from '@/directive/permission/index' // 权限判断指令
+  import store from '@/store'
 
   export default {
     name: "index",
+    directives: { permission },
     data() {
       return {
         tableData: [],
@@ -85,6 +101,18 @@
       this.searchHandle()
     },
     methods: {
+      isAdmin(app) {
+        if (checkPermission(['admin'])) {
+          return true
+        }
+        let username = store.getters && store.getters.name
+        if (username && username === app.primary.username) {
+          return true
+        }
+        return app.secondary.some(member => {
+          return member.username === username
+        });
+      },
       searchHandle() {
         let params = Object.assign({}, {
           pageIndex: this.pageIndex,

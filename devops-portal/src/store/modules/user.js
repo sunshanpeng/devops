@@ -47,16 +47,19 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.username).then(response => {
-        const { data } = response
-        if (!data) {
-          return reject('Verification failed, please Login again.')
+      getInfo().then(response => {
+        const { model } = response
+        if (!model) {
+          return reject('获取用户信息失败，请重新登录')
         }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        resolve(data)
+        const { username, roles } = model
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('用户权限无效')
+        }
+        commit('SET_ROLES', roles)
+        commit('SET_NAME', username)
+        resolve(model)
       }).catch(error => {
         reject(error)
       })
