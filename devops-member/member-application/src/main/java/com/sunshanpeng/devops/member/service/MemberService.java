@@ -17,4 +17,7 @@ public interface MemberService extends BaseService<MemberEntity, Long> {
     List<SimpleMemberDTO> search(String keyword);
 
     Optional<MemberEntity> get(String username);
+
+    SimpleMemberDTO userInfo(String username);
+
 }

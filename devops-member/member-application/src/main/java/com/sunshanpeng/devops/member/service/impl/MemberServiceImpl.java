@@ -2,6 +2,7 @@ package com.sunshanpeng.devops.member.service.impl;
 
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.core.util.BeanUtil;
+import com.sunshanpeng.devops.member.config.DevopsConfig;
 import com.sunshanpeng.devops.member.domain.dao.MemberRepository;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, MemberRepository> implements MemberService {
+
+    @Resource
+    private DevopsConfig config;
 
     @Override
     public Page<MemberEntity> pageQuery(MemberPageQueryDTO queryDTO) {
@@ -55,5 +60,19 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, Membe
     @Override
     public Optional<MemberEntity> get(String username) {
         return baseRepository.findByUsername(username);
+    }
+
+    @Override
+    public SimpleMemberDTO userInfo(String username) {
+        Optional<MemberEntity> memberEntityOptional = baseRepository.findByUsername(username);
+        if (!memberEntityOptional.isPresent()) {
+            return null;
+        }
+        SimpleMemberDTO memberDTO = BeanUtil.copy(memberEntityOptional.get(), SimpleMemberDTO.class);
+        memberDTO.addRole("developer");
+        if (config.isAdmin(memberDTO.getUsername())) {
+            memberDTO.addRole("admin");
+        }
+        return memberDTO;
     }
 }

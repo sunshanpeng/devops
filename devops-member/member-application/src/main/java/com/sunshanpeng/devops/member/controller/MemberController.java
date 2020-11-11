@@ -35,4 +35,11 @@ public class MemberController extends BaseController<MemberEntity, Long, MemberS
         List<SimpleMemberDTO> list = baseService.search(keyword);
         return BaseResponse.createSuccessResult(list);
     }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "用户信息", notes = "根据用户名获取用户信息")
+    public BaseResponse<SimpleMemberDTO> userInfo(@RequestHeader String username) {
+        SimpleMemberDTO simpleMemberDTO = baseService.userInfo(username);
+        return BaseResponse.createSuccessResult(simpleMemberDTO);
+    }
 }
