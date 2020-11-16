@@ -23,6 +23,12 @@
             <groupId>com.sunshanpeng.devops</groupId>
             <artifactId>common-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sunshanpeng.devops</groupId>
+            <artifactId>devops-k8s</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
