@@ -2,12 +2,14 @@ package com.sunshanpeng.devops.k8s.utils;
 
 import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 import com.sunshanpeng.devops.k8s.config.KubeConfig;
+import com.sunshanpeng.devops.k8s.dto.ContainerExecDTO;
 import com.sunshanpeng.devops.k8s.dto.PodDTO;
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
@@ -60,6 +62,16 @@ public class PodUtil {
     public static void delete(@NotBlank String clusterCode, @NotBlank String namespace, @NotBlank String podName) throws IOException {
         KubernetesClient client = KubeConfig.getClient(clusterCode);
         client.pods().inNamespace(namespace).withName(podName).delete();
+    }
+
+    public static ExecWatch exec(ContainerExecDTO containerExecDTO) throws IOException {
+        KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
+        return client.pods().inNamespace(containerExecDTO.getNamespace())
+                .withName(containerExecDTO.getPodName()).inContainer(containerExecDTO.getAppName())
+                .redirectingInput()
+                .redirectingOutput()
+                .withTTY()
+                .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(), "bash");
     }
 
 }

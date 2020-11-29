@@ -1,15 +1,30 @@
 package com.sunshanpeng.devops.k8s.websocket;
 
+import com.sunshanpeng.devops.k8s.dto.ContainerExecDTO;
+import com.sunshanpeng.devops.k8s.utils.PodUtil;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.time.LocalDateTime;
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
+@Slf4j
 public class ContainerExecWSHandler extends TextWebSocketHandler {
+
+    @Resource(name = "execExecutorService")
+    private ExecutorService execExecutorService;
+
     /**
      * 建立连接
+     *
      * @param session
      * @throws Exception
      */
@@ -17,6 +32,27 @@ public class ContainerExecWSHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
 
+        ExecWatch exec = PodUtil.exec((ContainerExecDTO) session.getAttributes().get("param"));
+        session.getAttributes().put("exec", exec);
+        InputStream inputStream = exec.getOutput();
+        execExecutorService.execute(() -> {
+            try {
+                byte[] bytes = new byte[1024];
+                for (int n = 0; n >= 0; n = inputStream.read(bytes)) {
+                    String msg = new String(bytes, 0, n);
+                    session.sendMessage(new TextMessage(msg));
+                    bytes = new byte[1024];
+                }
+            } catch (IOException e) {
+                log.error("send message error", e);
+                try {
+                    session.sendMessage(new TextMessage("错误，请重新连接; " + e.getLocalizedMessage()));
+                    session.close();
+                } catch (IOException ignored) {
+
+                }
+            }
+        });
     }
 
     /**
@@ -28,20 +64,35 @@ public class ContainerExecWSHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        if ("heartbeat".equals(message.getPayload())) {
+            return;
+        }
         // 获得客户端传来的消息
-        String payload = message.getPayload();
-        System.out.println("server 接收到" + payload);
-        session.sendMessage(new TextMessage("server 发送给消息 " + payload + " " + LocalDateTime.now().toString()));
+        ExecWatch exec = (ExecWatch) session.getAttributes().get("exec");
+        OutputStream input = exec.getInput();
+        input.write(message.asBytes());
+        input.flush();
     }
 
     /**
      * 关闭连接
+     *
      * @param session
      * @param status
      * @throws Exception
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("session close");
+        ExecWatch exec = (ExecWatch) session.getAttributes().get("exec");
+        OutputStream input = exec.getInput();
+        Optional.ofNullable(input).ifPresent(in -> {
+            try {
+                input.write("exit\r\n".getBytes());
+                input.flush();
+                input.close();
+            } catch (IOException e) {
+                log.error("close send message error", e);
+            }
+        });
     }
 }
