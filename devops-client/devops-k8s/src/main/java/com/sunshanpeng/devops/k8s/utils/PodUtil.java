@@ -10,6 +10,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
@@ -64,6 +65,11 @@ public class PodUtil {
         client.pods().inNamespace(namespace).withName(podName).delete();
     }
 
+    public static LogWatch log(ContainerExecDTO containerExecDTO) throws IOException {
+        KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
+        return client.pods().inNamespace(containerExecDTO.getNamespace()).withName(containerExecDTO.getPodName()).tailingLines(500).watchLog();
+    }
+
     public static ExecWatch exec(ContainerExecDTO containerExecDTO) throws IOException {
         KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
         return client.pods().inNamespace(containerExecDTO.getNamespace())
@@ -72,6 +78,17 @@ public class PodUtil {
                 .redirectingOutput()
                 .withTTY()
                 .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(), "bash");
+        /**
+         *     "/bin/sh",
+         *     "-c",
+         *     'export LINES=20; export COLUMNS=100; '
+         *     'TERM=xterm-256color; export TERM; [ -x /bin/bash ] '
+         *     '&& ([ -x /usr/bin/script ] '
+         *     '&& /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) '
+         *     '|| exec /bin/sh'
+         *
+         *      kubectl exec -i -t -n namespace pod -c container "--" sh -c "clear; (bash || ash || sh)"
+         */
     }
 
 }
