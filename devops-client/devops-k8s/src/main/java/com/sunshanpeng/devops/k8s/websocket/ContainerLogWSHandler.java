@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 public class ContainerLogWSHandler extends TextWebSocketHandler {
 
-    @Resource(name = "execExecutorService")
+    @Resource(name = "logExecutorService")
     private ExecutorService execExecutorService;
 
     /**
