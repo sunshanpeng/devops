@@ -9,6 +9,8 @@ public class PodDTO {
 
     private String podName;
 
+    private String namespace;
+
     private String podIp;
 
     private String hostIp;

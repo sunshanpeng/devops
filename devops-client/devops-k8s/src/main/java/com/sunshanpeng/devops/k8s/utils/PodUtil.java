@@ -12,9 +12,13 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PipedOutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +54,7 @@ public class PodUtil {
                 return new ValueLabelDTO("Unknown", status.getMessage());
             }).orElse(new ValueLabelDTO("ERROR", status.getMessage()));
             return PodDTO.builder().podName(metadata.getName())
+                    .namespace(metadata.getNamespace())
                     .podIp(status.getPodIP())
                     .hostIp(status.getHostIP())
                     .createTime(metadata.getCreationTimestamp())
@@ -70,25 +75,30 @@ public class PodUtil {
         return client.pods().inNamespace(containerExecDTO.getNamespace()).withName(containerExecDTO.getPodName()).tailingLines(500).watchLog();
     }
 
-    public static ExecWatch exec(ContainerExecDTO containerExecDTO) throws IOException {
+    public static ExecWatch exec(ContainerExecDTO containerExecDTO, WebSocketSession session) throws IOException {
         KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
+        PipedOutputStream outputStream = new PipedOutputStream();
         return client.pods().inNamespace(containerExecDTO.getNamespace())
                 .withName(containerExecDTO.getPodName()).inContainer(containerExecDTO.getAppName())
-                .redirectingInput()
-                .redirectingOutput()
+                .writingInput(outputStream)
+                .writingOutput(getOutputStream(session))
+                .writingError(getOutputStream(session))
                 .withTTY()
-                .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(), "bash");
-        /**
-         *     "/bin/sh",
-         *     "-c",
-         *     'export LINES=20; export COLUMNS=100; '
-         *     'TERM=xterm-256color; export TERM; [ -x /bin/bash ] '
-         *     '&& ([ -x /usr/bin/script ] '
-         *     '&& /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) '
-         *     '|| exec /bin/sh'
-         *
-         *      kubectl exec -i -t -n namespace pod -c container "--" sh -c "clear; (bash || ash || sh)"
-         */
+                .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(),
+                        "/bin/sh","-c","clear; (bash || ash || sh)");
+    }
+
+    private static OutputStream getOutputStream(WebSocketSession session) {
+        return new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                session.sendMessage(new BinaryMessage(b, off, len, true));
+            }
+        };
     }
 
 }
