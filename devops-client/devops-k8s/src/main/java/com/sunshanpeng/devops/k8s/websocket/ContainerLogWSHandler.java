@@ -9,17 +9,11 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 @Slf4j
 public class ContainerLogWSHandler extends TextWebSocketHandler {
 
-    @Resource(name = "logExecutorService")
-    private ExecutorService execExecutorService;
 
     /**
      * 建立连接
@@ -31,26 +25,8 @@ public class ContainerLogWSHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
 
-        LogWatch logWatch = PodUtil.log((ContainerExecDTO) session.getAttributes().get("param"));
+        LogWatch logWatch = PodUtil.log((ContainerExecDTO) session.getAttributes().get("param"), session);
         session.getAttributes().put("logWatch", logWatch);
-        InputStream inputStream = logWatch.getOutput();
-        execExecutorService.execute(() -> {
-            try {
-                byte[] bytes = new byte[1024];
-                for (int n = 0; n >= 0; n = inputStream.read(bytes)) {
-                    String msg = new String(bytes, 0, n);
-                    session.sendMessage(new TextMessage(msg.replaceAll("\n", "\r\n")));
-                }
-            } catch (IOException e) {
-                log.error("send message error", e);
-                try {
-                    session.sendMessage(new TextMessage("错误，请重新连接; " + e.getLocalizedMessage()));
-                    session.close();
-                } catch (IOException ignored) {
-
-                }
-            }
-        });
     }
 
     /**
