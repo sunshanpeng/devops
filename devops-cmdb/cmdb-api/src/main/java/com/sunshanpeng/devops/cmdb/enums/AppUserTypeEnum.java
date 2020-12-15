@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Getter
 @Dict(key = "appUserType", desc = "应用负责人类型")
 public enum AppUserTypeEnum implements BaseEnum {
-    PRIMARY("primary", "主要负责人"),
-    SECONDARY("secondary", "次要负责人"),
-    QA("qa", "质量负责人"),
+    PRIMARY("owner", "负责人"),
+    SECONDARY("developer", "开发"),
+    QA("qa", "测试"),
     ;
     AppUserTypeEnum(String value, String label) {
         this.value = value;
