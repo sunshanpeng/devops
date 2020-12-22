@@ -28,8 +28,7 @@ public enum RecordTypeEnum implements BaseEnum {
         return label;
     }
 
-    @Override
-    public List<ValueLabelDTO> getList() {
+    public static List<ValueLabelDTO> getList() {
         return Arrays.stream(RecordTypeEnum.values()).map(recordTypeEnum ->
                 ValueLabelDTO.builder().value(recordTypeEnum.getValue())
                         .label(recordTypeEnum.getLabel()).build())

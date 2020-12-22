@@ -32,8 +32,7 @@ public enum MonitorTypeEnum implements BaseEnum {
         return value;
     }
 
-    @Override
-    public List<ValueLabelDTO> getList() {
+    public static List<ValueLabelDTO> getList() {
         return Arrays.stream(MonitorTypeEnum.values()).map(e ->
                 ValueLabelDTO.builder().value(e.getValue())
                         .label(e.getLabel()).build())

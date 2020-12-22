@@ -33,8 +33,7 @@ public enum AppUserTypeEnum implements BaseEnum {
         return this.label;
     }
 
-    @Override
-    public List<ValueLabelDTO> getList() {
+    public static List<ValueLabelDTO> getList() {
         return Arrays.stream(AppUserTypeEnum.values()).map(e ->
                 ValueLabelDTO.builder().value(e.getValue())
                         .label(e.getLabel()).build())

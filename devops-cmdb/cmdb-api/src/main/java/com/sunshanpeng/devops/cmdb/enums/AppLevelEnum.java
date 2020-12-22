@@ -35,8 +35,7 @@ public enum AppLevelEnum implements BaseEnum {
         return label;
     }
 
-    @Override
-    public List<ValueLabelDTO> getList() {
+    public static List<ValueLabelDTO> getList() {
         return Arrays.stream(AppLevelEnum.values()).map(e ->
                 ValueLabelDTO.builder().value(e.getValue())
                         .label(e.getLabel()).build())

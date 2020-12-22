@@ -26,8 +26,7 @@ public enum RecordStatusEnum implements BaseEnum {
         this.AliPrivateZone = AliPrivateZone;
     }
 
-    @Override
-    public List<ValueLabelDTO> getList() {
+    public static List<ValueLabelDTO> getList() {
         return Arrays.stream(RecordStatusEnum.values()).map(recordStatusEnum ->
                 ValueLabelDTO.builder().value(recordStatusEnum.getValue())
                         .label(recordStatusEnum.getLabel()).build())
