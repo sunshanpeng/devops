@@ -1,20 +1,27 @@
 package com.sunshanpeng.devops.k8s.websocket;
 
 import com.sunshanpeng.devops.k8s.dto.ContainerExecDTO;
+import com.sunshanpeng.devops.k8s.event.ExecCloseEvent;
+import com.sunshanpeng.devops.k8s.event.ExecConnectEvent;
 import com.sunshanpeng.devops.k8s.utils.PodUtil;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
 
 @Slf4j
 public class ContainerExecWSHandler extends TextWebSocketHandler {
+
+    @Resource
+    private ApplicationEventPublisher publisher;
     /**
      * 建立连接
      *
@@ -25,8 +32,12 @@ public class ContainerExecWSHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
 
-        ExecWatch exec = PodUtil.exec((ContainerExecDTO) session.getAttributes().get("param"), session);
+        ContainerExecDTO containerExecDTO = (ContainerExecDTO) session.getAttributes().get("param");
+        ExecWatch exec = PodUtil.exec(containerExecDTO, session);
         session.getAttributes().put("exec", exec);
+
+        publisher.publishEvent(new ExecConnectEvent(this, containerExecDTO));
+
     }
 
     /**
@@ -58,12 +69,13 @@ public class ContainerExecWSHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         ExecWatch exec = (ExecWatch) session.getAttributes().get("exec");
+        ContainerExecDTO containerExecDTO = (ContainerExecDTO) session.getAttributes().get("param");
         OutputStream input = exec.getInput();
         Optional.ofNullable(input).ifPresent(in -> {
             try {
-                input.write("exit\r\n".getBytes());
                 input.flush();
                 input.close();
+                publisher.publishEvent(new ExecCloseEvent(this, containerExecDTO));
             } catch (IOException e) {
                 log.error("close send message error", e);
             }
