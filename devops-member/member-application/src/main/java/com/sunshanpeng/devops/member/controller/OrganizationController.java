@@ -21,7 +21,7 @@ import java.util.List;
 @Api(tags = "组织管理")
 @RestController
 @RequestMapping("/orgs")
-public class OrganizationController extends BaseController<OrganizationEntity, Long, OrganizationService> {
+public class OrganizationController extends BaseController<OrganizationEntity, OrganizationService> {
 
     @GetMapping
     @ApiOperation(value = "分页查询", notes = "分页查询组织结构")

@@ -5,7 +5,7 @@ import com.sunshanpeng.devops.common.base.BaseRepository;
 
 import java.util.List;
 
-public interface MetaConfigRepository extends BaseRepository<MetaConfigEntity, Long> {
+public interface MetaConfigRepository extends BaseRepository<MetaConfigEntity> {
     List<MetaConfigEntity> findByGroup(String group);
 
     MetaConfigEntity findByKey(String key);

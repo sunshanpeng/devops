@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberService extends BaseService<MemberEntity, Long> {
+public interface MemberService extends BaseService<MemberEntity> {
 
     Page<MemberEntity> pageQuery(@NotNull MemberPageQueryDTO queryDTO);
 

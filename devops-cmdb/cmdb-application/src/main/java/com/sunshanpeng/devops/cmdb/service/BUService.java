@@ -6,7 +6,7 @@ import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 
 import java.util.List;
 
-public interface BUService extends BaseService<BusinessUnitEntity, Long> {
+public interface BUService extends BaseService<BusinessUnitEntity> {
 
     List<ValueLabelDTO> getValueLabels();
 }

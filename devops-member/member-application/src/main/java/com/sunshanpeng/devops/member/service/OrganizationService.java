@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface OrganizationService extends BaseService<OrganizationEntity, Long> {
+public interface OrganizationService extends BaseService<OrganizationEntity> {
 
     Page<OrganizationEntity> pageQuery(OrgPageQueryDTO queryDTO);
 

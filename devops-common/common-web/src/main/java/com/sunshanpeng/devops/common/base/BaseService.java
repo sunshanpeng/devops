@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Validated
-public interface BaseService<T,ID> {
+public interface BaseService<T> {
     T save(@NotNull T entity);
 
-    void deleteById(@NotNull ID id);
+    void deleteById(@NotNull Long id);
 
     T update(@NotNull T entity);
 
-    Optional<T> findById(@NotNull ID id);
+    Optional<T> findById(@NotNull Long id);
 
     List<T> findAll();
 }

@@ -5,7 +5,7 @@ import com.sunshanpeng.devops.common.base.BaseRepository;
 
 import java.util.List;
 
-public interface MonitorRepository extends BaseRepository<MonitorEntity, Long> {
+public interface MonitorRepository extends BaseRepository<MonitorEntity> {
 
     List<MonitorEntity> findByAppName(String appName);
 }

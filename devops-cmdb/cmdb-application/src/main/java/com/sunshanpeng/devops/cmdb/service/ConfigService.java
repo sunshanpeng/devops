@@ -6,7 +6,7 @@ import com.sunshanpeng.devops.common.core.dto.KeyValueDTO;
 
 import java.util.List;
 
-public interface ConfigService extends BaseService<MetaConfigEntity, Long> {
+public interface ConfigService extends BaseService<MetaConfigEntity> {
 
     List<KeyValueDTO> getConfigs(String group);
 

@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, Long, AppInfoRepository> implements AppInfoService {
+public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRepository> implements AppInfoService {
 
     @Resource
     private AppUserRepository appUserRepository;

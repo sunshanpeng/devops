@@ -5,7 +5,7 @@ import com.sunshanpeng.devops.common.base.BaseRepository;
 
 import java.util.List;
 
-public interface AppUserRepository extends BaseRepository<AppUserEntity, Long> {
+public interface AppUserRepository extends BaseRepository<AppUserEntity> {
 
     List<AppUserEntity> findByAppName(String appName);
 

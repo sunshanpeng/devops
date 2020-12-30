@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseServiceImpl<T extends BaseEntity, ID, R extends BaseRepository<T, ID>> implements BaseService<T, ID> {
+public abstract class BaseServiceImpl<T extends BaseEntity, R extends BaseRepository<T>> implements BaseService<T> {
 
     @Autowired
     protected R baseRepository;
@@ -16,7 +16,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID, R extends BaseRe
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(Long id) {
         Optional<T> entity = findById(id);
         if (entity.isPresent()) {
             baseRepository.deleteById(id);
@@ -29,7 +29,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID, R extends BaseRe
     }
 
     @Override
-    public Optional<T> findById(ID id) {
+    public Optional<T> findById(Long id) {
         return baseRepository.findById(id);
     }
 

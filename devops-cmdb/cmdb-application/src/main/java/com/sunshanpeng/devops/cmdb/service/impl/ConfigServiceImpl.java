@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ConfigServiceImpl extends BaseServiceImpl<MetaConfigEntity, Long, MetaConfigRepository> implements ConfigService {
+public class ConfigServiceImpl extends BaseServiceImpl<MetaConfigEntity, MetaConfigRepository> implements ConfigService {
 
     @Override
     public List<KeyValueDTO> getConfigs(String group) {

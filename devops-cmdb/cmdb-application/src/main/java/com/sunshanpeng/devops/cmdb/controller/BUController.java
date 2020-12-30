@@ -18,7 +18,7 @@ import java.util.List;
 @Api(tags = "业务线管理")
 @RestController
 @RequestMapping("/bus")
-public class BUController extends BaseController<BusinessUnitEntity,Long,BUService> {
+public class BUController extends BaseController<BusinessUnitEntity,BUService> {
 
     @GetMapping
     @ApiOperation(value = "业务线查询", notes = "获取所有业务线")

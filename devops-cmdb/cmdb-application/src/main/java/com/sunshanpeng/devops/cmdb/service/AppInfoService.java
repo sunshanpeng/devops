@@ -9,7 +9,7 @@ import com.sunshanpeng.devops.common.base.BaseService;
 
 import java.util.Optional;
 
-public interface AppInfoService extends BaseService<AppInfoEntity, Long>{
+public interface AppInfoService extends BaseService<AppInfoEntity>{
     void save(ApplicationDetailDTO application);
 
     Optional<ApplicationDTO> findByAppName(String appName);

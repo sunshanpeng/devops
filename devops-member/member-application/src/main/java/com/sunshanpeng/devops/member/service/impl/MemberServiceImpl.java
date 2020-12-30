@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, Long, MemberRepository> implements MemberService {
+public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, MemberRepository> implements MemberService {
 
     @Resource
     private DevopsConfig config;

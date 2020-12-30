@@ -19,7 +19,7 @@ import java.util.List;
 @Api(tags = "成员管理")
 @RestController
 @RequestMapping("/members")
-public class MemberController extends BaseController<MemberEntity, Long, MemberService> {
+public class MemberController extends BaseController<MemberEntity, MemberService> {
 
     @GetMapping
     @ApiOperation(value = "分页查询", notes = "分页查询用户")

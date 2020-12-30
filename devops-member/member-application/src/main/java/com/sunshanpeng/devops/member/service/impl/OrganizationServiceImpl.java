@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationEntity, Long, OrganizationRepository> implements OrganizationService {
+public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationEntity, OrganizationRepository> implements OrganizationService {
 
     private static final Long DEFAULT_ROOT_ID = 1L;
 

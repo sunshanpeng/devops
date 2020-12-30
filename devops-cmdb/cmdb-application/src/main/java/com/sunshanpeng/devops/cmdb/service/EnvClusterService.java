@@ -7,7 +7,7 @@ import com.sunshanpeng.devops.common.base.BaseService;
 
 import java.util.List;
 
-public interface EnvClusterService extends BaseService<EnvClusterEntity, Long> {
+public interface EnvClusterService extends BaseService<EnvClusterEntity> {
 
     EnvEntity save(EnvEntity envEntity);
 

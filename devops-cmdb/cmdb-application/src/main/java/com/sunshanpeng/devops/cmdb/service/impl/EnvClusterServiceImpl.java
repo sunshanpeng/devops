@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class EnvClusterServiceImpl extends BaseServiceImpl<EnvClusterEntity,Long, EnvClusterRepository> implements EnvClusterService {
+public class EnvClusterServiceImpl extends BaseServiceImpl<EnvClusterEntity, EnvClusterRepository> implements EnvClusterService {
 
     @Resource
     private EnvRepository envRepository;
