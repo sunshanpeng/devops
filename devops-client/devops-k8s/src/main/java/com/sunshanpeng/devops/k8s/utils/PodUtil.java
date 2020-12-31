@@ -4,6 +4,7 @@ import com.sunshanpeng.devops.common.core.dto.ValueLabelDTO;
 import com.sunshanpeng.devops.k8s.config.KubeConfig;
 import com.sunshanpeng.devops.k8s.dto.ContainerExecDTO;
 import com.sunshanpeng.devops.k8s.dto.PodDTO;
+import com.sunshanpeng.devops.k8s.event.MessageFuction;
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -75,23 +76,26 @@ public class PodUtil {
         KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
         return client.pods().inNamespace(containerExecDTO.getNamespace())
                 .withName(containerExecDTO.getPodName()).inContainer(containerExecDTO.getAppName())
-                .tailingLines(200).watchLog(getOutputStream(session, true));
+                .tailingLines(500).watchLog(getOutputStream(session, true, null));
     }
 
-    public static ExecWatch exec(ContainerExecDTO containerExecDTO, WebSocketSession session) throws IOException {
+    public static ExecWatch exec(ContainerExecDTO containerExecDTO, WebSocketSession session,
+                                 MessageFuction messageFuction) throws IOException {
         KubernetesClient client = KubeConfig.getClient(containerExecDTO.getClusterCode());
         PipedOutputStream outputStream = new PipedOutputStream();
         return client.pods().inNamespace(containerExecDTO.getNamespace())
                 .withName(containerExecDTO.getPodName()).inContainer(containerExecDTO.getAppName())
                 .writingInput(outputStream)
-                .writingOutput(getOutputStream(session, false))
-                .writingError(getOutputStream(session, false))
+                .writingOutput(getOutputStream(session, true, messageFuction))
+                .writingError(getOutputStream(session, true, messageFuction))
                 .withTTY()
                 .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(),
                         "/bin/sh", "-c", "clear; (bash || ash || sh)");
     }
 
-    private static OutputStream getOutputStream(WebSocketSession session, boolean isText) {
+    private static OutputStream getOutputStream(WebSocketSession session,
+                                                boolean isText,
+                                                MessageFuction messageFuction) {
         return new OutputStream() {
             @Override
             public void write(int b) throws IOException {
@@ -100,9 +104,17 @@ public class PodUtil {
             @Override
             public void write(byte[] b, int off, int len) throws IOException {
                 if (isText) {
-                    session.sendMessage(new TextMessage(new String(b, off, len).replaceAll("\n", "\r\n")));
+                    String message = new String(b, off, len);
+                    if (!message.endsWith("\r\n")) {
+                        message = message.replaceAll("\n", "\r\n");
+                    }
+                    session.sendMessage(new TextMessage(message));
+                    if (messageFuction != null) {
+                        messageFuction.run(session.getId(), message);
+                    }
+                } else {
+                    session.sendMessage(new BinaryMessage(b, off, len, true));
                 }
-                session.sendMessage(new BinaryMessage(b, off, len, true));
             }
         };
     }
