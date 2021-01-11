@@ -22,14 +22,13 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
-    private static final String AUTH_USERNAME = "username";
+    static final String AUTH_USERNAME = "username";
 
     @Value("${auth.jwt.secret:123456}")
     private String secretKey;
