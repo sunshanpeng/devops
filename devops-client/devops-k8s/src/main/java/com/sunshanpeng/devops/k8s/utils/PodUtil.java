@@ -89,7 +89,7 @@ public class PodUtil {
                 .writingOutput(getOutputStream(session, true, messageFuction))
                 .writingError(getOutputStream(session, true, messageFuction))
                 .withTTY()
-                .exec("env", "TERM=xterm", "COLUMNS=" + containerExecDTO.getCols(), "LINES=" + containerExecDTO.getRows(),
+                .exec("env", "TERM=xterm", "COLUMNS=" + (containerExecDTO.getCols() + 1), "LINES=" + containerExecDTO.getRows(),
                         "/bin/sh", "-c", "clear; (bash || ash || sh)");
     }
 
