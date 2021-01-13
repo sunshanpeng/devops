@@ -90,7 +90,10 @@ public class LogFilter implements GlobalFilter, Ordered {
             @Override
             @SuppressWarnings("unchecked")
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
-
+                String contentType = exchange.getResponse().getHeaders().getFirst("Content-Type");
+                if (contentType == null || !contentType.contains("application/json")) {
+                    return super.writeWith(body);
+                }
                 Class inClass = String.class;
                 Class outClass = String.class;
 
@@ -108,8 +111,7 @@ public class LogFilter implements GlobalFilter, Ordered {
 
                 Mono modifiedBody = clientResponse.bodyToMono(inClass)
                         .flatMap(originalBody -> {
-                            String contentType = exchange.getResponse().getHeaders().getFirst("Content-Type");
-                            if (contentType != null && contentType.contains("application/json")) {
+                            if (contentType.contains("application/json")) {
                                 exchange.getAttributes().put(RESPONSE_BODY, originalBody.toString());
                                 output(exchange);
                             } else {
