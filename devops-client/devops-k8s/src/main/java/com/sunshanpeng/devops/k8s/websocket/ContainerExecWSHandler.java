@@ -3,6 +3,7 @@ package com.sunshanpeng.devops.k8s.websocket;
 import com.sunshanpeng.devops.k8s.dto.ContainerExecDTO;
 import com.sunshanpeng.devops.k8s.event.ExecCloseEvent;
 import com.sunshanpeng.devops.k8s.event.ExecConnectEvent;
+import com.sunshanpeng.devops.k8s.event.ExecMessageEvent;
 import com.sunshanpeng.devops.k8s.utils.PodUtil;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,8 @@ public class ContainerExecWSHandler extends TextWebSocketHandler {
         super.afterConnectionEstablished(session);
 
         ContainerExecDTO containerExecDTO = (ContainerExecDTO) session.getAttributes().get("param");
-        ExecWatch exec = PodUtil.exec(containerExecDTO, session);
+        ExecWatch exec = PodUtil.exec(containerExecDTO, session,
+                ((sessionId, message) -> publisher.publishEvent(new ExecMessageEvent(this, sessionId, message))));
         session.getAttributes().put("exec", exec);
 
         publisher.publishEvent(new ExecConnectEvent(this, containerExecDTO));

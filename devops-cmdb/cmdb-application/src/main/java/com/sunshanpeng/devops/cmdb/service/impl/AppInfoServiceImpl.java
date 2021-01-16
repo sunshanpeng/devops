@@ -133,10 +133,10 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
         ApplicationDTO applicationDTO = BeanUtil.copy(appInfoEntity, ApplicationDTO.class);
         List<AppUserEntity> appUserEntityList = appUserRepository.findByAppName(appInfoEntity.getAppName());
         Optional<AppUserEntity> primary = appUserEntityList.stream().filter(appUserEntity ->
-                AppUserTypeEnum.PRIMARY.getValue().equals(appUserEntity.getAppUserType()))
+                AppUserTypeEnum.OWNER.getValue().equals(appUserEntity.getAppUserType()))
                 .findFirst();
         List<AppUserEntity> secondary = appUserEntityList.stream().filter(appUserEntity ->
-                AppUserTypeEnum.SECONDARY.getValue().equals(appUserEntity.getAppUserType()))
+                AppUserTypeEnum.DEVELOPER.getValue().equals(appUserEntity.getAppUserType()))
                 .collect(Collectors.toList());
         List<AppUserEntity> qa = appUserEntityList.stream().filter(appUserEntity ->
                 AppUserTypeEnum.QA.getValue().equals(appUserEntity.getAppUserType()))
