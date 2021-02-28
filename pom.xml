@@ -18,6 +18,7 @@
     <modules>
         <module>devops-member</module>
         <module>devops-cmdb</module>
+        <module>devops-gateway</module>
         <module>devops-deploy</module>
         <module>devops-message</module>
         <module>devops-record</module>
