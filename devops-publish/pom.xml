@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>devops-deploy</artifactId>
+    <artifactId>devops-publish</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>deploy-api</module>
-        <module>deploy-application</module>
+        <module>publish-api</module>
+        <module>publish-application</module>
     </modules>
 </project>
