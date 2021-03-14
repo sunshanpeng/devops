@@ -1,7 +1,6 @@
 package com.sunshanpeng.devops.cmdb.controller;
 
 import com.sunshanpeng.devops.cmdb.domain.entity.ClusterEntity;
-import com.sunshanpeng.devops.cmdb.domain.entity.EnvEntity;
 import com.sunshanpeng.devops.cmdb.service.EnvClusterService;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.log.MethodLogger;
@@ -24,21 +23,6 @@ public class EnvClusterController {
 
     @Resource
     private EnvClusterService envClusterService;
-
-    @PostMapping("/envs")
-    @MethodLogger
-    @ApiOperation(value = "添加环境")
-    public BaseResponse<EnvEntity> addEnv(@RequestBody @Validated EnvEntity body) {
-        return BaseResponse.createSuccessResult(envClusterService.save(body));
-    }
-
-
-    @GetMapping("/envs")
-    @ApiOperation(value = "获取所有环境")
-    public BaseResponse<List<EnvEntity>> getEnvs() {
-        return BaseResponse.createSuccessResult(envClusterService.findAllEnvs());
-    }
-
 
     @PostMapping("/clusters")
     @MethodLogger

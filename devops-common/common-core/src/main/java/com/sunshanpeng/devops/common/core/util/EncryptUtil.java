@@ -1,13 +1,12 @@
 package com.sunshanpeng.devops.common.core.util;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class EncryptUtil {
     /**
@@ -86,7 +85,7 @@ public class EncryptUtil {
         IvParameterSpec iv = new IvParameterSpec(key.getBytes());//使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
         byte[] encrypted = cipher.doFinal(content.getBytes());
-        return Base64.encode(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
+        return Base64.getEncoder().encodeToString(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
     }
 
     private static final String KEY_ALGORITHM = "AES";
@@ -108,7 +107,7 @@ public class EncryptUtil {
 
             //加密
             byte[] result = cipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
-            String encode = Base64.encode(result);
+            String encode = Base64.getEncoder().encodeToString(result);
             encode = iv.substring(0, 8) + encode.substring(0, 8) + iv.substring(8) + encode.substring(8);
             return encode;
         } catch (Exception ex) {
