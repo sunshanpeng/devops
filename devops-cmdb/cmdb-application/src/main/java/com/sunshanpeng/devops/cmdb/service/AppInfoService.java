@@ -16,5 +16,4 @@ public interface AppInfoService extends BaseService<AppInfoEntity>{
 
     BasePageResponse<ApplicationDTO> pageQuery(ApplicationPageQueryDTO queryDTO);
 
-    Optional<ApplicationDetailDTO> getDetail(String appName);
 }

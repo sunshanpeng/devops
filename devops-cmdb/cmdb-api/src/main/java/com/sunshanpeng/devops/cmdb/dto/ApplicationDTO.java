@@ -39,17 +39,14 @@ public class ApplicationDTO extends BaseDTO {
     private String ports;
 
     @ApiModelProperty(value = "主要负责人", required = true)
-    private AppUserDTO primary;
+    private List<AppUserDTO> owner;
 
-    @ApiModelProperty(value = "次要负责人", required = true)
-    private List<AppUserDTO> secondary;
+    @ApiModelProperty(value = "研发负责人", required = true)
+    private List<AppUserDTO> developer;
 
     @ApiModelProperty(value = "质量负责人", required = true)
     private List<AppUserDTO> qa;
 
-    public void setPrimary(String username, String fullName) {
-        this.primary = new AppUserDTO(username, fullName);
-    }
     public Integer getWebPort() {
         if (!StringUtils.isEmpty(ports)) {
             String[] split = ports.split(",");
