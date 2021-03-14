@@ -23,6 +23,7 @@
         <module>devops-record</module>
         <module>devops-common</module>
         <module>devops-client</module>
+        <module>devops-module</module>
     </modules>
 
     <properties>

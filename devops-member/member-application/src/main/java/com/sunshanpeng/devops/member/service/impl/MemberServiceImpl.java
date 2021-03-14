@@ -31,7 +31,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, MemberRepos
 
     @Override
     public Page<MemberEntity> pageQuery(MemberPageQueryDTO queryDTO) {
-        Specification<MemberEntity> specification = (Specification<MemberEntity>) (root, criteriaQuery, criteriaBuilder) -> {
+        Specification<MemberEntity> specification = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotBlank(queryDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username"), queryDTO.getUsername()));
