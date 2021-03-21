@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: gateway
+    name: devops-gateway
   cloud:
     gateway:
       ################################
@@ -42,11 +42,11 @@ spring:
             name: default
             fallbackUri: forward:/defaultfallback
       routes:
-        - id: member
+        - id: devops-member
           uri: http://localhost:8081
           predicates:
             - Path=/member/**
-        - id: cmdb
+        - id: devops-cmdb
           uri: http://localhost:8082
           predicates:
             - Path=/cmdb/**

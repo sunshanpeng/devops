@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cmdb
+    name: devops-cmdb
   jpa:
     generate-ddl: true
     show-sql: true # 打印SQL语句
