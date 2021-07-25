@@ -1,7 +1,6 @@
 package com.sunshanpeng.devops.common.base;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface BaseRepository<T> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+public interface BaseRepository<T> extends BaseMapper<T> {
 }

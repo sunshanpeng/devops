@@ -8,7 +8,4 @@ import java.util.Optional;
 
 public interface MemberRepository extends BaseRepository<MemberEntity> {
 
-    List<MemberEntity> findAllByUsernameLikeOrFullNameLike(String username, String fullName);
-
-    Optional<MemberEntity> findByUsername(String username);
 }

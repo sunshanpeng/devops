@@ -12,7 +12,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends BaseReposi
 
     @Override
     public T save(T entity) {
-        return baseRepository.save(entity);
+        baseRepository.insert(entity);
+        return entity;
     }
 
     @Override
@@ -25,17 +26,18 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends BaseReposi
 
     @Override
     public T update(T entity) {
-        return baseRepository.save(entity);
+        baseRepository.updateById(entity);
+        return entity;
     }
 
     @Override
     public Optional<T> findById(Long id) {
-        return baseRepository.findById(id);
+        return Optional.ofNullable(baseRepository.selectById(id));
     }
 
     @Override
     public List<T> findAll() {
-        return baseRepository.findAll();
+        return baseRepository.selectList(null);
     }
 
 }

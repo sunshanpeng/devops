@@ -7,25 +7,15 @@ import com.sunshanpeng.devops.cmdb.domain.repository.AppUserRepository;
 import com.sunshanpeng.devops.cmdb.dto.AppUserDTO;
 import com.sunshanpeng.devops.cmdb.dto.ApplicationDTO;
 import com.sunshanpeng.devops.cmdb.dto.ApplicationDetailDTO;
-import com.sunshanpeng.devops.cmdb.dto.ApplicationPageQueryDTO;
 import com.sunshanpeng.devops.cmdb.enums.AppUserTypeEnum;
 import com.sunshanpeng.devops.cmdb.service.AppInfoService;
-import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.core.util.BeanUtil;
 import com.sunshanpeng.devops.common.exception.BusinessException;
-import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,30 +47,6 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
         return Optional.ofNullable(applicationDTO);
     }
 
-    @Override
-    public BasePageResponse<ApplicationDTO> pageQuery(ApplicationPageQueryDTO queryDTO) {
-        //查询应用
-        Specification<AppInfoEntity> specification = (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotBlank(queryDTO.getAppName())) {
-                list.add(criteriaBuilder.equal(root.get("appName"), queryDTO.getAppName()));
-            }
-            Predicate[] predicates = list.toArray(new Predicate[0]);
-            return criteriaBuilder.and(predicates);
-        };
-        Pageable pageable = PageRequest.of(queryDTO.getPageIndex(),
-                queryDTO.getPageSize(), Sort.Direction.DESC, "id")
-                //分页插件下标从0开始，第1页下标为0
-                .previous();
-        Page<AppInfoEntity> page = baseRepository.findAll(specification, pageable);
-        //查询应用对应负责人
-        List<ApplicationDTO> applicationDTOList = page.getContent().stream()
-                .map(this::converter).collect(Collectors.toList());
-        //返回
-        return BasePageResponse.createSuccessResult(applicationDTOList, queryDTO.getPageIndex(),
-                queryDTO.getPageSize(), page.getTotalElements());
-    }
-
     private void beforeSave(ApplicationDetailDTO application) {
         // validate
         if (baseRepository.findByAppName(application.getAppName()).isPresent()) {
@@ -90,7 +56,7 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
 
     private void doSave(ApplicationDetailDTO application) {
         AppInfoEntity appInfoEntity = BeanUtil.copy(application, AppInfoEntity.class);
-        baseRepository.save(appInfoEntity);
+        baseRepository.insert(appInfoEntity);
     }
 
     private void afterSave(ApplicationDetailDTO application) {

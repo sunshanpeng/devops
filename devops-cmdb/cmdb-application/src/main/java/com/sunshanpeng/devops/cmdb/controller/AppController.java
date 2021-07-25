@@ -2,9 +2,7 @@ package com.sunshanpeng.devops.cmdb.controller;
 
 import com.sunshanpeng.devops.cmdb.dto.ApplicationDTO;
 import com.sunshanpeng.devops.cmdb.dto.ApplicationDetailDTO;
-import com.sunshanpeng.devops.cmdb.dto.ApplicationPageQueryDTO;
 import com.sunshanpeng.devops.cmdb.service.AppInfoService;
-import com.sunshanpeng.devops.common.base.BasePageResponse;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.log.MethodLogger;
 import io.swagger.annotations.Api;
@@ -36,11 +34,5 @@ public class AppController {
     @ApiOperation(value = "查询", notes = "通过应用名称查询")
     public BaseResponse<ApplicationDTO> get(@PathVariable String appName) {
         return BaseResponse.createSuccessResult(appInfoService.findByAppName(appName).orElse(null));
-    }
-
-    @GetMapping
-    @ApiOperation(value = "分页查询", notes = "分页查询应用信息")
-    public BasePageResponse<ApplicationDTO> page(ApplicationPageQueryDTO queryDTO) {
-        return appInfoService.pageQuery(queryDTO);
     }
 }

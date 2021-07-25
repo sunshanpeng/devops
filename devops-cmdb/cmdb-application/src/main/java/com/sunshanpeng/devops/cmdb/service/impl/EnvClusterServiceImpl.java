@@ -17,12 +17,13 @@ public class EnvClusterServiceImpl extends BaseServiceImpl<EnvClusterEntity, Env
     private ClusterRepository clusterRepository;
     @Override
     public ClusterEntity save(ClusterEntity entity) {
-        return clusterRepository.save(entity);
+        clusterRepository.insert(entity);
+        return entity;
     }
 
     @Override
     public List<ClusterEntity> findAllClusters() {
-        return clusterRepository.findAll();
+        return clusterRepository.selectList(null);
     }
 
 

@@ -1,24 +1,17 @@
 package com.sunshanpeng.devops.member.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.core.util.BeanUtil;
 import com.sunshanpeng.devops.member.config.DevopsConfig;
 import com.sunshanpeng.devops.member.domain.dao.MemberRepository;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
-import com.sunshanpeng.devops.member.dto.MemberPageQueryDTO;
 import com.sunshanpeng.devops.member.dto.SimpleMemberDTO;
 import com.sunshanpeng.devops.member.service.MemberService;
-import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,41 +23,22 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, MemberRepos
     private DevopsConfig config;
 
     @Override
-    public Page<MemberEntity> pageQuery(MemberPageQueryDTO queryDTO) {
-        Specification<MemberEntity> specification = (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotBlank(queryDTO.getUsername())) {
-                list.add(criteriaBuilder.equal(root.get("username"), queryDTO.getUsername()));
-            }
-            if (StringUtils.isNotBlank(queryDTO.getPhone())) {
-                list.add(criteriaBuilder.equal(root.get("phone"), queryDTO.getPhone()));
-            }
-            Predicate[] predicates = list.toArray(new Predicate[0]);
-            return criteriaBuilder.and(predicates);
-        };
-        Pageable pageable = PageRequest.of(queryDTO.getPageIndex(),
-                queryDTO.getPageSize(), Sort.Direction.DESC, "id")
-                //分页插件下标从0开始，第1页下标为0
-                .previous();
-        return baseRepository.findAll(specification, pageable);
-    }
-
-    @Override
     public List<SimpleMemberDTO> search(String keyword) {
         keyword = "%" + keyword + "%";
-        return baseRepository.findAllByUsernameLikeOrFullNameLike(keyword, keyword)
+        return baseRepository.selectList(new LambdaQueryWrapper<MemberEntity>().like(MemberEntity::getUsername, keyword))
                 .stream().map(memberEntity -> BeanUtil.copy(memberEntity, SimpleMemberDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<MemberEntity> get(String username) {
-        return baseRepository.findByUsername(username);
+        MemberEntity memberEntity = baseRepository.selectOne(new QueryWrapper<MemberEntity>().eq("username", username));
+        return Optional.ofNullable(memberEntity);
     }
 
     @Override
     public SimpleMemberDTO userInfo(String username) {
-        Optional<MemberEntity> memberEntityOptional = baseRepository.findByUsername(username);
+        Optional<MemberEntity> memberEntityOptional = get(username);
         if (!memberEntityOptional.isPresent()) {
             return null;
         }
