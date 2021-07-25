@@ -1,5 +1,6 @@
 package com.sunshanpeng.devops.member.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sunshanpeng.devops.common.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +14,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "成员")
+@TableName(MemberEntity.TABLE_NAME)
 public class MemberEntity extends BaseEntity {
     public static final String TABLE_NAME = "t_member";
 

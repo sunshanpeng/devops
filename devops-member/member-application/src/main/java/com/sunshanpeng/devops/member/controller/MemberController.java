@@ -1,6 +1,8 @@
 package com.sunshanpeng.devops.member.controller;
 
+import com.sunshanpeng.devops.common.base.BaseController;
 import com.sunshanpeng.devops.common.base.BaseResponse;
+import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.SimpleMemberDTO;
 import com.sunshanpeng.devops.member.service.MemberService;
 import io.swagger.annotations.Api;
@@ -15,7 +17,7 @@ import java.util.List;
 @Api(tags = "成员管理")
 @RestController
 @RequestMapping("/members")
-public class MemberController {
+public class MemberController extends BaseController<MemberEntity, MemberService> {
     @Resource
     private MemberService memberService;
 
