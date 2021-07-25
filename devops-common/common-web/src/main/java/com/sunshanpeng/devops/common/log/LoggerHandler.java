@@ -35,7 +35,8 @@ public class LoggerHandler {
         try {
             if (LogTypeEnum.FULL == methodLogger.logType() || LogTypeEnum.RETURN == methodLogger.logType()) {
                 long elapsedTime = System.currentTimeMillis() - start;
-                log.info("method: [{}], result: {}, span: {} ms", methodName, JsonUtil.toJSONString(result), elapsedTime);
+                log.info("method: [{}], result: {}, span: {} ms", methodName,
+                        JsonUtil.toJSONString(result).orElse(""), elapsedTime);
             }
         } catch (Exception var11) {
             log.warn("method: [{}], return log error {}", methodName, var11.getLocalizedMessage());
