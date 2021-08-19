@@ -3,6 +3,8 @@ package com.sunshanpeng.devops.common.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -20,27 +22,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Object> handleControllerException(HttpServletRequest request, Throwable ex) {
+    ResponseEntity<BaseResponse<Void>> handleControllerException(HttpServletRequest request, Throwable ex) {
         log.error(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), ex.getMessage()), ex);
-        return BaseResponse.createFailResult(ex.getMessage());
+        BaseResponse<Void> failResult = BaseResponse.createFailResult(ex.getMessage());
+        return new ResponseEntity<>(failResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Object> handleBusinessException(HttpServletRequest request, BusinessException ex) {
+    BaseResponse<Void> handleBusinessException(HttpServletRequest request, BaseException ex) {
         return handleError(request, ex, ex.getMessage());
     }
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Object> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException ex) {
+    BaseResponse<Void> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException ex) {
         return handleError(request, ex, ex.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     @ResponseBody
-    BaseResponse<Object> handleBindException(HttpServletRequest request, Throwable ex) {
+    ResponseEntity<BaseResponse<Void>> handleBindException(HttpServletRequest request, Throwable ex) {
         BindingResult result = null;
         String message = "unknown exception";
         if (ex instanceof MethodArgumentNotValidException) {
@@ -55,11 +58,12 @@ public class GlobalExceptionHandler {
                             .append(", 当前值: '").append(f.getRejectedValue()).append("'; "));
             message = stringBuilder.toString();
         }
-        return handleError(request, ex, message);
+        BaseResponse<Void> failResult = handleError(request, ex, message);
+        return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Object> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException cex) {
+    ResponseEntity<BaseResponse<Void>> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException cex) {
         StringBuilder stringBuilder = new StringBuilder();
         if (!CollectionUtils.isEmpty(cex.getConstraintViolations())) {
             cex.getConstraintViolations().forEach(v -> {
@@ -68,16 +72,18 @@ public class GlobalExceptionHandler {
             });
         }
         String message = stringBuilder.toString();
-        return handleError(request, cex, message);
+        BaseResponse<Void> failResult = handleError(request, cex, message);
+        return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Object> handleJsonProcessingException(HttpServletRequest request, JsonProcessingException ex) {
-        return handleError(request, ex, "请求体的Json格式错误");
+    ResponseEntity<BaseResponse<Void>> handleJsonProcessingException(HttpServletRequest request, JsonProcessingException ex) {
+        BaseResponse<Void> failResult = handleError(request, ex, "请求体的Json格式错误");
+        return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
-    private BaseResponse<Object> handleError(HttpServletRequest request, Throwable ex,
+    private BaseResponse<Void> handleError(HttpServletRequest request, Throwable ex,
                                                             String message) {
         log.warn(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), message), ex);

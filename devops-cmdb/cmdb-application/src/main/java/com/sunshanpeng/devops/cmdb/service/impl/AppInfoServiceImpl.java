@@ -11,7 +11,7 @@ import com.sunshanpeng.devops.cmdb.enums.AppUserTypeEnum;
 import com.sunshanpeng.devops.cmdb.service.AppInfoService;
 import com.sunshanpeng.devops.common.base.BaseServiceImpl;
 import com.sunshanpeng.devops.common.core.util.BeanUtil;
-import com.sunshanpeng.devops.common.exception.BusinessException;
+import com.sunshanpeng.devops.common.exception.BaseException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
     private void beforeSave(ApplicationDetailDTO application) {
         // validate
         if (baseMapper.findByAppName(application.getAppName()).isPresent()) {
-            throw new BusinessException(String.format("应用名%s已存在", application.getAppName()));
+            throw new BaseException(String.format("应用名%s已存在", application.getAppName()));
         }
     }
 

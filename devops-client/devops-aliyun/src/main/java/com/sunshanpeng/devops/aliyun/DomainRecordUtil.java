@@ -2,7 +2,7 @@ package com.sunshanpeng.devops.aliyun;
 
 import com.aliyuncs.alidns.model.v20150109.*;
 import com.aliyuncs.exceptions.ClientException;
-import com.sunshanpeng.devops.common.exception.BusinessException;
+import com.sunshanpeng.devops.common.exception.BaseException;
 import com.sunshanpeng.devops.resource.dto.DomainRecordDTO;
 import com.sunshanpeng.devops.resource.enums.RecordStatusEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +61,7 @@ public class DomainRecordUtil {
         }
 
         if (records.size() > 1) {
-            throw new BusinessException("解析记录超过1条，暂时不支持更新");
+            throw new BaseException("解析记录超过1条，暂时不支持更新");
         }
 
         UpdateDomainRecordRequest updateDomainRecordRequest = new UpdateDomainRecordRequest();
@@ -104,7 +104,7 @@ public class DomainRecordUtil {
                         aliyunClient.doAction(deleteDomainRecordRequest);
                     } catch (ClientException e) {
                         log.error(String.format("domainName: %s", domainName), e);
-                        throw new BusinessException(String.format("删除解析记录异常: %s", domainName));
+                        throw new BaseException(String.format("删除解析记录异常: %s", domainName));
                     }
                 });
     }
@@ -118,7 +118,7 @@ public class DomainRecordUtil {
     public void setStatus(String domainName, RecordStatusEnum statusEnum) throws ClientException {
         List<DescribeSubDomainRecordsResponse.Record> records = subDomain(domainName);
         if (CollectionUtils.isEmpty(records)) {
-            throw new BusinessException(String.format("解析记录不存在: %s", domainName));
+            throw new BaseException(String.format("解析记录不存在: %s", domainName));
         }
         records.stream().map(DescribeSubDomainRecordsResponse.Record::getRecordId)
                 .forEach(recordId ->{
@@ -129,7 +129,7 @@ public class DomainRecordUtil {
                         aliyunClient.doAction(request);
                     } catch (ClientException e) {
                         log.error(String.format("domainName: %s", domainName), e);
-                        throw new BusinessException(String.format("设置解析记录状态异常: %s", domainName));
+                        throw new BaseException(String.format("设置解析记录状态异常: %s", domainName));
                     }
                 });
     }

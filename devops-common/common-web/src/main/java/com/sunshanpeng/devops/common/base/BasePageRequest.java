@@ -21,8 +21,11 @@ public class BasePageRequest implements Serializable {
     }
 
     public void setPageSize(Integer pageSize) {
-        if (pageSize != null && pageSize > 0 && pageSize <= MAX_PAGE_SIZE) {
+        if (pageSize != null && pageSize > 0) {
             this.pageSize = pageSize;
+            if (pageSize > MAX_PAGE_SIZE) {
+                this.pageSize = MAX_PAGE_SIZE;
+            }
         }
     }
 }
