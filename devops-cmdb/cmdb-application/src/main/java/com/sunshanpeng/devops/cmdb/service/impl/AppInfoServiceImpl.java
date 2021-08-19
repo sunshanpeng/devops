@@ -39,7 +39,7 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
 
     @Override
     public Optional<ApplicationDTO> findByAppName(String appName) {
-        Optional<AppInfoEntity> appInfoEntity = baseRepository.findByAppName(appName);
+        Optional<AppInfoEntity> appInfoEntity = baseMapper.findByAppName(appName);
         if (!appInfoEntity.isPresent()) {
             return Optional.empty();
         }
@@ -49,14 +49,14 @@ public class AppInfoServiceImpl extends BaseServiceImpl<AppInfoEntity, AppInfoRe
 
     private void beforeSave(ApplicationDetailDTO application) {
         // validate
-        if (baseRepository.findByAppName(application.getAppName()).isPresent()) {
+        if (baseMapper.findByAppName(application.getAppName()).isPresent()) {
             throw new BusinessException(String.format("应用名%s已存在", application.getAppName()));
         }
     }
 
     private void doSave(ApplicationDetailDTO application) {
         AppInfoEntity appInfoEntity = BeanUtil.copy(application, AppInfoEntity.class);
-        baseRepository.insert(appInfoEntity);
+        baseMapper.insert(appInfoEntity);
     }
 
     private void afterSave(ApplicationDetailDTO application) {

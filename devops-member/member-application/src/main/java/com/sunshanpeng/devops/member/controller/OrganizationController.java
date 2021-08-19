@@ -1,9 +1,7 @@
 package com.sunshanpeng.devops.member.controller;
 
-import com.sunshanpeng.devops.common.base.BaseController;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.dto.TreeDTO;
-import com.sunshanpeng.devops.member.domain.entity.OrganizationEntity;
 import com.sunshanpeng.devops.member.service.OrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +17,7 @@ import java.util.List;
 @Api(tags = "组织管理")
 @RestController
 @RequestMapping("/orgs")
-public class OrganizationController extends BaseController<OrganizationEntity, OrganizationService> {
+public class OrganizationController {
 
     @Resource
     private OrganizationService organizationService;

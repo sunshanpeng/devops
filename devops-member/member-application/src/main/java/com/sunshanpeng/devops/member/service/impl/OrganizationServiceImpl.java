@@ -8,6 +8,7 @@ import com.sunshanpeng.devops.member.domain.entity.OrganizationEntity;
 import com.sunshanpeng.devops.member.service.OrganizationService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -18,18 +19,21 @@ public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationEntity,
 
     private static final Long DEFAULT_ROOT_ID = 1L;
 
+    @Resource
+    private OrganizationRepository organizationRepository;
+
     @Override
     public List<TreeDTO> tree(Long rootId) {
         if (rootId == null) {
             rootId = DEFAULT_ROOT_ID;
         }
-        Optional<OrganizationEntity> entityOptional = Optional.ofNullable(baseRepository.selectById(rootId));
+        Optional<OrganizationEntity> entityOptional = Optional.ofNullable(organizationRepository.selectById(rootId));
         if (!entityOptional.isPresent()) {
             return Collections.emptyList();
         }
         OrganizationEntity parenOrg = entityOptional.get();
         TreeDTO rootNode = covert(parenOrg);
-        List<TreeDTO> treeOrgs = baseRepository.selectList(null)
+        List<TreeDTO> treeOrgs = organizationRepository.selectList(null)
                 .stream().map(this::covert)
                 .collect(Collectors.toList());
         return TreeUtil.getAllChildrens(rootNode, treeOrgs);

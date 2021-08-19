@@ -15,7 +15,7 @@ public class BUServiceImpl extends BaseServiceImpl<BusinessUnitEntity, BUReposit
 
     @Override
     public List<ValueLabelDTO> getValueLabels() {
-       return baseRepository.selectList(null).stream()
+       return baseMapper.selectList(null).stream()
                 .map(bu ->new ValueLabelDTO(bu.getBuCode(), bu.getBuName()))
              .collect(Collectors.toList());
     }

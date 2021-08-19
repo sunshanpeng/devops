@@ -15,5 +15,5 @@ public class BaseDTO implements Serializable {
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
     @ApiModelProperty("修改时间")
-    private LocalDateTime modifyTime;
+    private LocalDateTime updateTime;
 }

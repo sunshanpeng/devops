@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, MemberRepository> implements MemberService {
+    @Resource
+    private MemberRepository memberRepository;
 
     @Resource
     private DevopsConfig config;
@@ -25,14 +27,14 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberEntity, MemberRepos
     @Override
     public List<SimpleMemberDTO> search(String keyword) {
         keyword = "%" + keyword + "%";
-        return baseRepository.selectList(new LambdaQueryWrapper<MemberEntity>().like(MemberEntity::getUsername, keyword))
+        return memberRepository.selectList(new LambdaQueryWrapper<MemberEntity>().like(MemberEntity::getUsername, keyword))
                 .stream().map(memberEntity -> BeanUtil.copy(memberEntity, SimpleMemberDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<MemberEntity> get(String username) {
-        MemberEntity memberEntity = baseRepository.selectOne(new QueryWrapper<MemberEntity>().eq("username", username));
+        MemberEntity memberEntity = memberRepository.selectOne(new QueryWrapper<MemberEntity>().eq("username", username));
         return Optional.ofNullable(memberEntity);
     }
 
