@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import com.sunshanpeng.devops.common.core.util.MD5Util;
-import com.sunshanpeng.devops.common.exception.BaseException;
+import com.sunshanpeng.devops.common.exception.ParamException;
 import com.sunshanpeng.devops.member.domain.entity.MemberEntity;
 import com.sunshanpeng.devops.member.dto.LoginDTO;
 import com.sunshanpeng.devops.member.service.MemberService;
@@ -39,15 +39,15 @@ public class AuthController {
     public BaseResponse<String> login(@RequestBody @Validated LoginDTO loginDTO) {
         Optional<MemberEntity> memberEntityOptional = memberService.get(loginDTO.getUsername());
         if (!memberEntityOptional.isPresent()) {
-            throw new BaseException("用户不存在");
+            throw new ParamException("用户不存在");
         }
         try {
             if (!Objects.equals(MD5Util.crypt(loginDTO.getPassword() + encryptKey),
                     memberEntityOptional.get().getPassword())) {
-                throw new BaseException("用户名或者密码错误");
+                throw new ParamException("用户名或者密码错误");
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new BaseException("MD5计算出错");
+            throw new ParamException("MD5计算出错");
         }
 
         return BaseResponse.createSuccessResult(buildJWT(loginDTO.getUsername()));

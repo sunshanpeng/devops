@@ -31,14 +31,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Void> handleBusinessException(HttpServletRequest request, BaseException ex) {
-        return handleError(request, ex, ex.getMessage());
+    ResponseEntity<BaseResponse<Void>> handleExecException(HttpServletRequest request, ExecException ex) {
+        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        return new ResponseEntity<>(failResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseBody
-    BaseResponse<Void> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException ex) {
-        return handleError(request, ex, ex.getMessage());
+    ResponseEntity<BaseResponse<Void>> handleParamException(HttpServletRequest request, ParamException ex) {
+        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    ResponseEntity<BaseResponse<Void>> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException ex) {
+        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})

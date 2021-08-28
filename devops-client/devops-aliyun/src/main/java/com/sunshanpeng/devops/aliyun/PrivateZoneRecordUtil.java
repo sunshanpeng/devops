@@ -3,7 +3,7 @@ package com.sunshanpeng.devops.aliyun;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.pvtz.model.v20180101.*;
 import com.google.common.collect.Lists;
-import com.sunshanpeng.devops.common.exception.BaseException;
+import com.sunshanpeng.devops.common.exception.ParamException;
 import com.sunshanpeng.devops.common.core.util.JsonUtil;
 import com.sunshanpeng.devops.resource.dto.DomainRecordDTO;
 import com.sunshanpeng.devops.resource.enums.RecordStatusEnum;
@@ -51,7 +51,7 @@ public class PrivateZoneRecordUtil {
         }
 
         if (records.size() > 1) {
-            throw new BaseException(String.format("解析记录超过1条，暂时不支持更新: %s", domainRecord.getFullDomain()));
+            throw new ParamException(String.format("解析记录超过1条，暂时不支持更新: %s", domainRecord.getFullDomain()));
         }
 
         UpdateZoneRecordRequest request = new UpdateZoneRecordRequest();
@@ -80,7 +80,7 @@ public class PrivateZoneRecordUtil {
                         aliyunClient.doAction(request);
                     } catch (ClientException e) {
                         log.error(String.format("zoneName: %s", domainRecord.getFullDomain()), e);
-                        throw new BaseException(String.format("删除解析记录异常: %s", domainRecord.getFullDomain()));
+                        throw new ParamException(String.format("删除解析记录异常: %s", domainRecord.getFullDomain()));
                     }
                 });
     }
@@ -94,7 +94,7 @@ public class PrivateZoneRecordUtil {
     public void setStatus(@NotNull DomainRecordDTO domainRecord, RecordStatusEnum statusEnum) throws ClientException {
         List<DescribeZoneRecordsResponse.Record> records = list(domainRecord);
         if (CollectionUtils.isEmpty(records)) {
-            throw new BaseException(String.format("解析记录不存在: %s", domainRecord.getFullDomain()));
+            throw new ParamException(String.format("解析记录不存在: %s", domainRecord.getFullDomain()));
         }
         records.stream().map(DescribeZoneRecordsResponse.Record::getRecordId)
                 .forEach(recordId ->{
@@ -105,7 +105,7 @@ public class PrivateZoneRecordUtil {
                         aliyunClient.doAction(request);
                     } catch (ClientException e) {
                         log.error(String.format("zoneName: %s", domainRecord.getFullDomain()), e);
-                        throw new BaseException(String.format("设置解析记录状态异常: %s", domainRecord.getFullDomain()));
+                        throw new ParamException(String.format("设置解析记录状态异常: %s", domainRecord.getFullDomain()));
                     }
                 });
     }
@@ -118,7 +118,7 @@ public class PrivateZoneRecordUtil {
         List<DescribeZonesResponse.Zone> zoneList = privateZoneList(zoneName);
         if (CollectionUtils.isEmpty(zoneList)|| zoneList.size() != 1) {
             log.error("zoneList:{}", JsonUtil.toJSONString(zoneList));
-            throw new BaseException(String.format("获取zoneId异常: %s", zoneName));
+            throw new ParamException(String.format("获取zoneId异常: %s", zoneName));
         }
         return zoneList.get(0).getZoneId();
     }
