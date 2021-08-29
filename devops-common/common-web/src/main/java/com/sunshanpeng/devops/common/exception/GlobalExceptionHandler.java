@@ -25,28 +25,28 @@ public class GlobalExceptionHandler {
     ResponseEntity<BaseResponse<Void>> handleControllerException(HttpServletRequest request, Throwable ex) {
         log.error(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), ex.getMessage()), ex);
-        BaseResponse<Void> failResult = BaseResponse.createFailResult(ex.getMessage());
+        BaseResponse<Void> failResult = BaseResponse.createFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return new ResponseEntity<>(failResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseBody
     ResponseEntity<BaseResponse<Void>> handleExecException(HttpServletRequest request, ExecException ex) {
-        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return new ResponseEntity<>(failResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseBody
     ResponseEntity<BaseResponse<Void>> handleParamException(HttpServletRequest request, ParamException ex) {
-        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     @ResponseBody
     ResponseEntity<BaseResponse<Void>> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException ex) {
-        BaseResponse<Void> failResult = handleError(request, ex, ex.getMessage());
+        BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
@@ -67,9 +67,10 @@ public class GlobalExceptionHandler {
                             .append(", 当前值: '").append(f.getRejectedValue()).append("'; "));
             message = stringBuilder.toString();
         }
-        BaseResponse<Void> failResult = handleError(request, ex, message);
+        BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.BAD_REQUEST.value(), message);
         return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler
     @ResponseBody
     ResponseEntity<BaseResponse<Void>> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException cex) {
@@ -81,21 +82,21 @@ public class GlobalExceptionHandler {
             });
         }
         String message = stringBuilder.toString();
-        BaseResponse<Void> failResult = handleError(request, cex, message);
+        BaseResponse<Void> failResult = handleError(request, cex, HttpStatus.BAD_REQUEST.value(), message);
         return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     @ResponseBody
     ResponseEntity<BaseResponse<Void>> handleJsonProcessingException(HttpServletRequest request, JsonProcessingException ex) {
-        BaseResponse<Void> failResult = handleError(request, ex, "请求体的Json格式错误");
+        BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.BAD_REQUEST.value(), "请求体的Json格式错误");
         return new ResponseEntity<>(failResult, HttpStatus.BAD_REQUEST);
     }
 
     private BaseResponse<Void> handleError(HttpServletRequest request, Throwable ex,
-                                                            String message) {
+                                           Integer code, String message) {
         log.warn(String.format("request error, uri=[%s], method=[%s], message=[%s]",
                 request.getRequestURI(), request.getMethod(), message), ex);
-        return BaseResponse.createFailResult(message);
+        return BaseResponse.createFailResult(code, message);
     }
 }

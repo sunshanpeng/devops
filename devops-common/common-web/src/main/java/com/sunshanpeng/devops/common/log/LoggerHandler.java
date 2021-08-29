@@ -33,10 +33,12 @@ public class LoggerHandler {
         result = joinPoint.proceed();
 
         try {
+            long elapsedTime = System.currentTimeMillis() - start;
             if (LogTypeEnum.FULL == methodLogger.logType() || LogTypeEnum.RETURN == methodLogger.logType()) {
-                long elapsedTime = System.currentTimeMillis() - start;
                 log.info("method: [{}], result: {}, span: {} ms", methodName,
                         JsonUtil.toJSONString(result).orElse(""), elapsedTime);
+            } else if (LogTypeEnum.PARAM == methodLogger.logType()) {
+                log.info("method: [{}], span: {} ms", methodName, elapsedTime);
             }
         } catch (Exception var11) {
             log.warn("method: [{}], return log error {}", methodName, var11.getLocalizedMessage());
