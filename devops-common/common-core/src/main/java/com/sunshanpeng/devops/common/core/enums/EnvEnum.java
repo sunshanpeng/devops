@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum EnvEnum {
-    DEV("dev","开发环境"),
-    TEST("test","测试环境"),
-    PRE("pre","预发环境"),
-    PROD("prod","生产环境"),
+    DEV("dev","开发环境"),//也有公司叫SIT集成环境
+    TEST("test","测试环境"),//阿里系公司很多交daily日常环境，也有公司叫UAT环境
+    PRE("pre","预发环境"),//也有公司叫GA灰度环境
+    PROD("prod","生产环境"),//也叫prd/pro线上环境现网环境
     ;
     private String value;
     private String label;
