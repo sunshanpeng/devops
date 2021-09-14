@@ -14,7 +14,7 @@
     <modules>
         <module>module-server</module>
         <module>module-api</module>
-        <module>module-business</module>
+        <module>module-biz</module>
         <module>module-job</module>
     </modules>
 

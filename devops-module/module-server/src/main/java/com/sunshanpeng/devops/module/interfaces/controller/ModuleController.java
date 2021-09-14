@@ -1,4 +1,4 @@
-package com.sunshanpeng.devops.module.controller;
+package com.sunshanpeng.devops.module.interfaces.controller;
 
 import com.sunshanpeng.devops.common.base.BaseResponse;
 import io.swagger.annotations.Api;

@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseBody
-    ResponseEntity<BaseResponse<Void>> handleExecException(HttpServletRequest request, ExecException ex) {
+    ResponseEntity<BaseResponse<Void>> handleExecException(HttpServletRequest request, SystemException ex) {
         BaseResponse<Void> failResult = handleError(request, ex, HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return new ResponseEntity<>(failResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
